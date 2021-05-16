@@ -11,7 +11,6 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "admins")
 public class Admin extends Person{

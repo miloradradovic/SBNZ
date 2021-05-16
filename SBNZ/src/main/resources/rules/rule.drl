@@ -1,0 +1,17 @@
+package rules;
+
+import com.example.SBNZ.model.TestRuleModel;
+
+rule "Response for message HI"
+	when
+		testObject: TestRuleModel(message=="Hi")
+	then
+		testObject.setMessage("Hi to you too");
+	end
+
+rule "Response for message HELLO"
+	when
+		testObject: TestRuleModel(message=="Hello")
+	then
+		testObject.setMessage("Hello to you too");
+	end
