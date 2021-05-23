@@ -6,4 +6,5 @@ public enum JunkFoodFrequency {
     SOMETIMES,
     RARELY,
     NEVER
+    
 }

@@ -13,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Training {
 
-    private Long id;
     private List<Session> sessionList;
     private float restTime;
+    private int numberOfSessions;
 
 }

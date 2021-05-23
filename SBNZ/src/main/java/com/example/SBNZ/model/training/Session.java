@@ -11,8 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Session {
 
-    private Long id;
     private Exercise exercise;
     private float weight; // optional
+    private int repetitions; //optional
     private float duration; // optional
+
 }

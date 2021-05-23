@@ -7,4 +7,5 @@ public enum HealthIssue {
     HIGH_FAT,
     TRIGLYCERIDES,
     HEART_PROBLEMS
+    
 }
