@@ -1,21 +1,24 @@
 package rules;
 
-import com.example.SBNZ.model.training.InputDataTraining;
-import com.example.SBNZ.model.training.Training;
+import com.example.SBNZ.model.diet.InputDataDiet;
+import com.example.SBNZ.model.diet.Diet;
+import com.example.SBNZ.enums.diet.Goal;
 
 
-rule "Response for message HI"
+rule "When goal is to lose weight"
 	when
-		$inputData: InputDataTraining(currentWeight > 10)
+		$inputData: InputDataDiet(currentWeight > goalWeight)
 	then
-		System.out.println("usao");
-		$inputData.getTraining().setRestTime(500);
+		$inputData.getDiet().setGoal(Goal.WEIGHT_LOSS);
 		update($inputData);
 	end
 
-rule "Response for message HELLO"
+rule "When goal is to lose weight"
 	when
-		testObject: TestRuleModel(message=="Hello")
+	    $inputData: InputDataDiet(diet.getGoal() == Goal.WEIGHT_LOSS, $currentWeight: currentWeight, $goalWeight: goalWeight);
+
 	then
-		testObject.setMessage("Hello to you too");
+		goal = "WEIGHT_LOSS";
+		$inputData.getDiet().setGoal(Goal.valueOf("WEIGHT_LOSS"));
+		update($inputData);
 	end

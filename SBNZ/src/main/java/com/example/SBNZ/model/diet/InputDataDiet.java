@@ -18,6 +18,7 @@ public class InputDataDiet extends InputData {
 	private int dailyCalBurn;
 	private JunkFoodFrequency junkFoodFrequency;
 	private ArrayList<HealthIssue> healthIssues = new ArrayList<HealthIssue>();
+	private Diet diet;
 	
 	public InputDataDiet(float currentWeight, float goalWeight, int programDuration, int fatPercentage,
 			int dailyCalBurn, JunkFoodFrequency junkFoodFrequency, ArrayList<HealthIssue> healthIssues) {
@@ -26,6 +27,7 @@ public class InputDataDiet extends InputData {
 		this.dailyCalBurn = dailyCalBurn;
 		this.junkFoodFrequency = junkFoodFrequency;
 		this.healthIssues = healthIssues;
+		this.diet = new Diet();
 	}
 	
 }
