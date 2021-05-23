@@ -12,5 +12,4 @@ import lombok.Setter;
 public class Diet {
 
     private NutritionValue nutritionValue;
-    // da li staviti listu predlozenih jela
 }

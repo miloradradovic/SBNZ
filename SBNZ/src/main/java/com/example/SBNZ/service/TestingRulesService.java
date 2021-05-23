@@ -17,7 +17,7 @@ public class TestingRulesService {
     }
 
     public TestRuleModel tryRules(TestRuleModel testRuleModel) {
-        KieSession kieSession = kieContainer.newKieSession("rulesSession");
+        KieSession kieSession = kieContainer.newKieSession();
         kieSession.insert(testRuleModel);
         kieSession.fireAllRules();
         kieSession.dispose();
