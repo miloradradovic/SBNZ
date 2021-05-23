@@ -4,8 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+
 public abstract class InputData {
 
 	private float currentWeight;
@@ -17,5 +16,37 @@ public abstract class InputData {
 		this.goalWeight = goalWeight;
 		this.programDuration = programDuration;
 	}
+
+	public float getCurrentWeight() {
+		return currentWeight;
+	}
+
+	public void setCurrentWeight(float currentWeight) {
+		this.currentWeight = currentWeight;
+	}
+
+	public float getGoalWeight() {
+		return goalWeight;
+	}
+
+	public void setGoalWeight(float goalWeight) {
+		this.goalWeight = goalWeight;
+	}
+
+	public int getProgramDuration() {
+		return programDuration;
+	}
+
+	public void setProgramDuration(int programDuration) {
+		this.programDuration = programDuration;
+	}
+
+	@Override
+	public String toString() {
+		return "InputData [currentWeight=" + currentWeight + ", goalWeight=" + goalWeight + ", programDuration="
+				+ programDuration + "]";
+	}
+	
+	
 	
 }

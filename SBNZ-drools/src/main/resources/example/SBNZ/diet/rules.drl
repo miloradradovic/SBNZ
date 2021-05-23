@@ -1,0 +1,21 @@
+package rules;
+
+import com.example.SBNZ.model.training.InputDataTraining;
+import com.example.SBNZ.model.training.Training;
+
+
+rule "Response for message HI"
+	when
+		$inputData: InputDataTraining(currentWeight > 10)
+	then
+		System.out.println("usao");
+		$inputData.getTraining().setRestTime(500);
+		update($inputData);
+	end
+
+rule "Response for message HELLO"
+	when
+		testObject: TestRuleModel(message=="Hello")
+	then
+		testObject.setMessage("Hello to you too");
+	end

@@ -20,7 +20,7 @@ public class SbnzApplication {
 		KieContainer kContainer = ks
 				.newKieContainer(ks.newReleaseId("example", "SBNZ-drools", "0.0.1-SNAPSHOT"));
 		KieScanner kScanner = ks.newKieScanner(kContainer);
-		kScanner.start(10_000);
+		kScanner.start(1_000);
 		return kContainer;
 	}
 

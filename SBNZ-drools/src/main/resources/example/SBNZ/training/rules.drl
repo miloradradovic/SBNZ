@@ -2,14 +2,15 @@ package rules;
 
 import com.example.SBNZ.model.TestRuleModel;
 
-rule "Response for message HI"
+rule "Response for message Haa"
 	when
 		testObject: TestRuleModel(message=="Hi")
 	then
 		testObject.setMessage("Hi to you too");
+		System.out.println("nesto");
 	end
 
-rule "Response for message HELLO"
+rule "Response for message aaaa"
 	when
 		testObject: TestRuleModel(message=="Hello")
 	then
