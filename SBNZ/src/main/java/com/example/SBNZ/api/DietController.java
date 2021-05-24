@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value="/training")
+@RequestMapping(value="/diet")
 public class DietController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class DietController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Diet> getDiet(@RequestBody InputDataDiet input) {
-
+    	System.out.println(input);
         Diet result = dietService.getDiet(input);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -10,8 +10,6 @@ import antlr.collections.List;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 public class InputDataDiet extends InputData {
 
 	private int fatPercentage;
@@ -29,5 +27,47 @@ public class InputDataDiet extends InputData {
 		this.healthIssues = healthIssues;
 		this.diet = new Diet();
 	}
+
+	public int getFatPercentage() {
+		return fatPercentage;
+	}
+
+	public void setFatPercentage(int fatPercentage) {
+		this.fatPercentage = fatPercentage;
+	}
+
+	public int getDailyCalBurn() {
+		return dailyCalBurn;
+	}
+
+	public void setDailyCalBurn(int dailyCalBurn) {
+		this.dailyCalBurn = dailyCalBurn;
+	}
+
+	public JunkFoodFrequency getJunkFoodFrequency() {
+		return junkFoodFrequency;
+	}
+
+	public void setJunkFoodFrequency(JunkFoodFrequency junkFoodFrequency) {
+		this.junkFoodFrequency = junkFoodFrequency;
+	}
+
+	public ArrayList<HealthIssue> getHealthIssues() {
+		return healthIssues;
+	}
+
+	public void setHealthIssues(ArrayList<HealthIssue> healthIssues) {
+		this.healthIssues = healthIssues;
+	}
+
+	public Diet getDiet() {
+		return diet;
+	}
+
+	public void setDiet(Diet diet) {
+		this.diet = diet;
+	}
+	
+	
 	
 }

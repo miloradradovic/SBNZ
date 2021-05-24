@@ -19,8 +19,8 @@ public class DietService {
 
     public Diet getDiet(InputDataDiet inputData) {
         KieSession kieSession = kieContainer.newKieSession();
-        kieSession.setGlobal("goal", "not initialized");
         kieSession.insert(inputData);
+        kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
         kieSession.dispose();
         return inputData.getDiet();

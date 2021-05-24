@@ -5,7 +5,8 @@ import com.example.SBNZ.model.diet.Diet;
 import com.example.SBNZ.enums.diet.Goal;
 
 
-rule "When goal is to lose weight"
+rule "When Current Weight is less then Goal Weight set goal to Weight Loss"
+	agenda-group "Ruleflow1"
 	when
 		$inputData: InputDataDiet(currentWeight > goalWeight)
 	then
@@ -13,12 +14,79 @@ rule "When goal is to lose weight"
 		update($inputData);
 	end
 
-rule "When goal is to lose weight"
+rule "When goal is to lose weight set minimum, maximum calorie deficit and recommended time"
+	lock-on-active true
+	auto-focus true
 	when
-	    $inputData: InputDataDiet(diet.getGoal() == Goal.WEIGHT_LOSS, $currentWeight: currentWeight, $goalWeight: goalWeight);
-
+	    $inputData: InputDataDiet(diet.getGoal() == Goal.WEIGHT_LOSS, 
+	    							$recommendedTime: ((currentWeight - goalWeight)*15), //recommended days
+	    							$recommendedDeficit: ((currentWeight - goalWeight)*40), //recommended cal deficit
+									$recommendedCalories: (currentWeight*40 - (currentWeight - goalWeight)*40))
+	 
 	then
-		goal = "WEIGHT_LOSS";
-		$inputData.getDiet().setGoal(Goal.valueOf("WEIGHT_LOSS"));
+		System.out.println($inputData.getDiet().getkCal());
+		$inputData.getDiet().setCalorieMax((int)$recommendedCalories);
+		$inputData.getDiet().setCalorieMin((int)($recommendedCalories - $recommendedDeficit));		
+		$inputData.getDiet().setRecommendedTime((int)$recommendedTime);
+		update($inputData);
+	end
+
+
+rule "When recommended time is bigger then desired program duration recommend lower daily kCal value"
+	lock-on-active true
+	salience -1
+	when
+	    $inputData: InputDataDiet(diet.getRecommendedTime() > programDuration,
+	    							$coefficient: (1.0 - (programDuration/diet.getRecommendedTime())),
+	    							$calorieMax: diet.getCalorieMax(),
+	    							$calorieMin: diet.getCalorieMin(),
+	    							$dailyCalBurn: dailyCalBurn)
+	then
+		
+		$inputData.getDiet().setkCal((int) ($calorieMax - ($calorieMax - $calorieMin)*$coefficient + $dailyCalBurn));
+		update($inputData);
+	end
+
+
+
+rule "When recommended time is less then desired program duration recommend maximum daily kCal value"
+	lock-on-active true
+	salience -1
+	when
+	    $inputData: InputDataDiet(diet.getRecommendedTime() <= programDuration,
+	    							$calorieMax: diet.getCalorieMax(),
+	    							$dailyCalBurn: dailyCalBurn)
+	then
+		$inputData.getDiet().setkCal((int) $calorieMax + $dailyCalBurn);
+		update($inputData);
+	end
+
+
+rule "When recommended number of kCal is above 2000 recommend kCal/10 grams of nutrition values."
+	no-loop
+	salience -2
+	when
+	    $inputData: InputDataDiet(diet.getkCal() > 2000,
+	    							$nutritionGrams: ((int) diet.getkCal()/10),
+	    							$lower: ((int) (diet.getkCal()/10/3*(fatPercentage/100))))
+	then
+		//System.out.println($lower/2);
+		$inputData.getDiet().setFats((int) $nutritionGrams/3 - $lower);
+		$inputData.getDiet().setProteins((int) $nutritionGrams/3 + ($lower/2));
+		$inputData.getDiet().setCarbonHydrates((int) $nutritionGrams/3 + ($lower/2));
+		update($inputData);
+	end
+	
+rule "When recommended number of kCal is below 2000 recommend 200 grams of nutrition values."
+	no-loop
+	salience -2
+	when
+	    $inputData: InputDataDiet(diet.getkCal() <= 2000,
+	    							$nutritionGrams: 200,
+	    							$lower: ((int)(200/3*(fatPercentage/100))))
+	then
+		$inputData.getDiet().setFats((int) $nutritionGrams/3 - $lower);
+		$inputData.getDiet().setProteins((int) $nutritionGrams/3 + $lower/2);
+		$inputData.getDiet().setCarbonHydrates((int) $nutritionGrams/3 + $lower/2);
 		update($inputData);
 	end
