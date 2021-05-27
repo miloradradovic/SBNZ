@@ -20,7 +20,7 @@ public class TrainingController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Training> getTraining(@RequestBody InputDataTraining input) {
 
-    	Training result = trainingService.tryRules(input);
+    	Training result = trainingService.getTraining(input);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -1,0 +1,30 @@
+package rules;
+
+import com.example.SBNZ.model.training.InputDataTraining;
+import com.example.SBNZ.model.training.Training;
+import com.example.SBNZ.model.training.Exercise;
+import com.example.SBNZ.model.training.Session;
+
+import com.example.SBNZ.enums.diet.Goal;
+import com.example.SBNZ.enums.training.Difficulty;
+import com.example.SBNZ.enums.training.ExerciseCategory;
+import com.example.SBNZ.enums.training.Muscle;
+
+
+rule "When Current Weight is less than Goal Weight -> set goal to Weight Loss"
+	agenda-group "Ruleflow1"
+	no-loop
+	when
+		$inputData: InputDataTraining(currentWeight > goalWeight)
+	then
+		insert(new Training(Goal.WEIGHT_LOSS));
+	end
+
+rule "When Current Weight is equal or above than Goal Weight -> set goal to Mass gain"
+	agenda-group "Ruleflow1"
+	no-loop
+	when
+		$inputData: InputDataTraining(currentWeight <= goalWeight)
+	then
+		insert(new Training(Goal.MASS_GAIN));
+	end

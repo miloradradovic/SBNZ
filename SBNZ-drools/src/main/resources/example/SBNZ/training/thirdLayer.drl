@@ -1,0 +1,25 @@
+package rules;
+
+import com.example.SBNZ.model.training.InputDataTraining;
+import com.example.SBNZ.model.training.Training;
+import com.example.SBNZ.model.training.Exercise;
+import com.example.SBNZ.model.training.Session;
+
+import com.example.SBNZ.enums.diet.Goal;
+import com.example.SBNZ.enums.training.Difficulty;
+import com.example.SBNZ.enums.training.ExerciseCategory;
+import com.example.SBNZ.enums.training.Muscle;
+
+rule "When goal is Mass gain, difficulty is high and using equipment is true-> idk"
+	no-loop
+	when
+        $training: Training(goal == Goal.MASS_GAIN)
+        $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                      equipment == true,
+                                      $currentWeight: currentWeight)
+	then
+        $training.setRestTime(10.0);
+        update($training);
+        $inputData.setTraining($training);
+        update($inputData);
+	end

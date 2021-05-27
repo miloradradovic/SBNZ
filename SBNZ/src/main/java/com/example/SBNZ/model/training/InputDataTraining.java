@@ -1,6 +1,7 @@
 package com.example.SBNZ.model.training;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.SBNZ.enums.training.Difficulty;
 import com.example.SBNZ.enums.training.Muscle;
@@ -20,6 +21,14 @@ public class InputDataTraining extends InputData {
 		this.injuries = injuries;
 		this.equipment = equipment;
 		this.training = new Training();
+	}
+
+	public List<Exercise> getExerciseList() {
+		return exerciseList;
+	}
+
+	public void setExerciseList(List<Exercise> exerciseList) {
+		this.exerciseList = exerciseList;
 	}
 
 	public Difficulty getDifficulty() {

@@ -1,10 +1,12 @@
 package com.example.SBNZ.model.training;
 
+import com.example.SBNZ.enums.diet.Goal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -12,19 +14,28 @@ import java.util.List;
 public class Training {
 
     private List<Session> sessionList;
-    private float restTime;
+    private double restTime;
     private int numberOfSessions;
-	
-    public List<Session> getSessionList() {
+    private Goal goal;
+
+	public Goal getGoal() {
+		return goal;
+	}
+
+	public void setGoal(Goal goal) {
+		this.goal = goal;
+	}
+
+	public List<Session> getSessionList() {
 		return sessionList;
 	}
 	public void setSessionList(List<Session> sessionList) {
 		this.sessionList = sessionList;
 	}
-	public float getRestTime() {
+	public double getRestTime() {
 		return restTime;
 	}
-	public void setRestTime(float restTime) {
+	public void setRestTime(double restTime) {
 		this.restTime = restTime;
 	}
 	public int getNumberOfSessions() {
@@ -34,6 +45,9 @@ public class Training {
 		this.numberOfSessions = numberOfSessions;
 	}
     
-    
+    public Training(Goal goal) {
+		this.goal = goal;
+		this.sessionList = new ArrayList<>();
+	}
 
 }

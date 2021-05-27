@@ -1,0 +1,208 @@
+package rules;
+
+import com.example.SBNZ.model.training.InputDataTraining;
+import com.example.SBNZ.model.training.Training;
+import com.example.SBNZ.model.training.Exercise;
+import com.example.SBNZ.model.training.Session;
+import com.example.SBNZ.model.training.CurrentFact;
+
+import com.example.SBNZ.enums.diet.Goal;
+import com.example.SBNZ.enums.training.Difficulty;
+import com.example.SBNZ.enums.training.ExerciseCategory;
+import com.example.SBNZ.enums.training.Muscle;
+
+rule "When goal is Mass gain, difficulty is high and using equipment is true-> get adequate exercises"
+	no-loop
+	when
+        $training: Training(goal == Goal.MASS_GAIN)
+        $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                      equipment == true,
+                                      $currentWeight: currentWeight,
+                                      $exercises: exerciseList)
+        accumulate(
+                   Exercise($e: this,
+                            difficulty == Difficulty.HIGH,
+                            equipment == true,
+                            exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL
+                            ) from $exercises,
+                   $filteredExercises: collectList($e)
+        )
+	then
+        insert(new CurrentFact($filteredExercises));
+	end
+
+rule "When goal is Mass gain, difficulty is medium and using equipment is true-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.MASS_GAIN)
+            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                          equipment == true,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == true, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Mass gain, difficulty is low and using equipment is true-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.MASS_GAIN)
+            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                          equipment == true,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == true, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Mass gain, difficulty is high and using equipment is false-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.MASS_GAIN)
+            $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                          equipment == false,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.HIGH, equipment == false, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Mass gain, difficulty is medium and using equipment is false-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.MASS_GAIN)
+            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                          equipment == false,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == false, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Mass gain, difficulty is low and using equipment is false-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.MASS_GAIN)
+            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                          equipment == false,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == false, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Weight loss, difficulty is high and using equipment is true-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.WEIGHT_LOSS)
+            $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                          equipment == true,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.HIGH, equipment == true, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Weight loss, difficulty is medium and using equipment is true-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.WEIGHT_LOSS)
+            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                          equipment == true,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == true, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Weight loss, difficulty is low and using equipment is true-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.WEIGHT_LOSS)
+            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                          equipment == true,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == true, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Weight loss, difficulty is high and using equipment is false-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.WEIGHT_LOSS)
+            $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                          equipment == false,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.HIGH, equipment == false, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Weight loss, difficulty is medium and using equipment is false-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.WEIGHT_LOSS)
+            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                          equipment == false,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == false, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
+
+rule "When goal is Weight loss, difficulty is low and using equipment is false-> idk"
+	no-loop
+    	when
+            $training: Training(goal == Goal.WEIGHT_LOSS)
+            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                          equipment == false,
+                                          $currentWeight: currentWeight,
+                                          $exercises: exerciseList)
+            accumulate(
+                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == false, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
+                       $filteredExercises: collectList($e)
+            )
+    	then
+            insert(new CurrentFact($filteredExercises));
+    	end
