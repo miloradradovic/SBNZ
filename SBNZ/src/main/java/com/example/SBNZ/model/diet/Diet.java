@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
 public class Diet {
 
 	//output1
@@ -41,7 +40,13 @@ public class Diet {
     
     private ArrayList<Meal> meals = new ArrayList<Meal>();
 
+    public Diet(Goal goal) {
+    	this.goal = goal;
+    }
     
+    public Diet() {
+
+    }
 
 	@Override
 	public String toString() {

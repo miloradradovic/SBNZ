@@ -1,7 +1,7 @@
 package rules;
 
 import com.example.SBNZ.model.TestRuleModel;
-
+/*
 rule "Response for message Haa"
 	when
 		testObject: TestRuleModel(message=="Hi")
@@ -15,4 +15,4 @@ rule "Response for message aaaa"
 		testObject: TestRuleModel(message=="Hello")
 	then
 		testObject.setMessage("Hello to you too");
-	end
+	end*/
