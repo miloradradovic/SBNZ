@@ -13,6 +13,7 @@ public class InputDataTraining extends InputData {
 	private ArrayList<Muscle> injuries;
 	private boolean equipment;
 	private Training training;
+	private List<Exercise> exerciseList = new ArrayList<>();
 
 	public InputDataTraining(float currentWeight, float goalWeight, int programDuration, Difficulty difficulty,
 			ArrayList<Muscle> injuries, boolean equipment) {
