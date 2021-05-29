@@ -17,6 +17,15 @@ public class Training {
     private double restTime;
     private int numberOfSessions;
     private Goal goal;
+    private List<Exercise> exercises = new ArrayList<>();
+
+	public List<Exercise> getExercises() {
+		return exercises;
+	}
+
+	public void setExercises(List<Exercise> exercises) {
+		this.exercises = exercises;
+	}
 
 	public Goal getGoal() {
 		return goal;

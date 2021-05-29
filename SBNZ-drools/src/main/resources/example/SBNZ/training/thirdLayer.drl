@@ -4,22 +4,28 @@ import com.example.SBNZ.model.training.InputDataTraining;
 import com.example.SBNZ.model.training.Training;
 import com.example.SBNZ.model.training.Exercise;
 import com.example.SBNZ.model.training.Session;
+import com.example.SBNZ.model.training.CurrentFact;
 
 import com.example.SBNZ.enums.diet.Goal;
 import com.example.SBNZ.enums.training.Difficulty;
 import com.example.SBNZ.enums.training.ExerciseCategory;
 import com.example.SBNZ.enums.training.Muscle;
 
-rule "When goal is Mass gain, difficulty is high and using equipment is true-> idk"
+// fact will go through this rule no matter the input
+rule "When rules are filtered by all the parameters, then filter by muscles"
 	no-loop
 	when
-        $training: Training(goal == Goal.MASS_GAIN)
-        $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
-                                      equipment == true,
-                                      $currentWeight: currentWeight)
+        $currentFact: CurrentFact($exerciseList: exerciseList, layer == 3)
+        $inputData: InputDataTraining($injuries: injuries)
+        $muscle: Muscle() from $injuries
+        accumulate(
+                           Exercise($e: this,
+                                    !muscleList.contains($muscle)
+                                    ) from $exerciseList,
+                           $filteredExercises: collectList($e)
+                )
 	then
-        $training.setRestTime(10.0);
-        update($training);
-        $inputData.setTraining($training);
-        update($inputData);
+        $currentFact.setExerciseList($filteredExercises);
+        $currentFact.setLayer(4);
+        update($currentFact);
 	end

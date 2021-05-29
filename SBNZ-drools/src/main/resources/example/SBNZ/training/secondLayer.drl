@@ -14,11 +14,13 @@ import com.example.SBNZ.enums.training.Muscle;
 rule "When goal is Mass gain, difficulty is high and using equipment is true-> get adequate exercises"
 	no-loop
 	when
+	    $currentFact: CurrentFact(layer == 2)
         $training: Training(goal == Goal.MASS_GAIN)
         $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
                                       equipment == true,
                                       $currentWeight: currentWeight,
                                       $exercises: exerciseList)
+
         accumulate(
                    Exercise($e: this,
                             difficulty == Difficulty.HIGH,
@@ -28,12 +30,16 @@ rule "When goal is Mass gain, difficulty is high and using equipment is true-> g
                    $filteredExercises: collectList($e)
         )
 	then
-        insert(new CurrentFact($filteredExercises));
+        $currentFact.setExerciseList($filteredExercises);
+        $currentFact.setLayer(3);
+        update($currentFact);
 	end
 
 rule "When goal is Mass gain, difficulty is medium and using equipment is true-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.MASS_GAIN)
             $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
                                           equipment == true,
@@ -44,12 +50,16 @@ rule "When goal is Mass gain, difficulty is medium and using equipment is true->
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
-    	end
+        $currentFact.setExerciseList($filteredExercises);
+        $currentFact.setLayer(3);
+        update($currentFact);
+    end
 
 rule "When goal is Mass gain, difficulty is low and using equipment is true-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.MASS_GAIN)
             $inputData: InputDataTraining(difficulty == Difficulty.LOW,
                                           equipment == true,
@@ -60,12 +70,16 @@ rule "When goal is Mass gain, difficulty is low and using equipment is true-> id
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Mass gain, difficulty is high and using equipment is false-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.MASS_GAIN)
             $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
                                           equipment == false,
@@ -76,12 +90,16 @@ rule "When goal is Mass gain, difficulty is high and using equipment is false-> 
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Mass gain, difficulty is medium and using equipment is false-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.MASS_GAIN)
             $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
                                           equipment == false,
@@ -92,12 +110,16 @@ rule "When goal is Mass gain, difficulty is medium and using equipment is false-
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Mass gain, difficulty is low and using equipment is false-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.MASS_GAIN)
             $inputData: InputDataTraining(difficulty == Difficulty.LOW,
                                           equipment == false,
@@ -108,12 +130,16 @@ rule "When goal is Mass gain, difficulty is low and using equipment is false-> i
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is high and using equipment is true-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.WEIGHT_LOSS)
             $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
                                           equipment == true,
@@ -124,12 +150,16 @@ rule "When goal is Weight loss, difficulty is high and using equipment is true->
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is medium and using equipment is true-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.WEIGHT_LOSS)
             $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
                                           equipment == true,
@@ -140,12 +170,16 @@ rule "When goal is Weight loss, difficulty is medium and using equipment is true
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is low and using equipment is true-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.WEIGHT_LOSS)
             $inputData: InputDataTraining(difficulty == Difficulty.LOW,
                                           equipment == true,
@@ -156,12 +190,16 @@ rule "When goal is Weight loss, difficulty is low and using equipment is true-> 
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is high and using equipment is false-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.WEIGHT_LOSS)
             $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
                                           equipment == false,
@@ -172,12 +210,16 @@ rule "When goal is Weight loss, difficulty is high and using equipment is false-
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is medium and using equipment is false-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.WEIGHT_LOSS)
             $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
                                           equipment == false,
@@ -188,12 +230,16 @@ rule "When goal is Weight loss, difficulty is medium and using equipment is fals
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is low and using equipment is false-> idk"
 	no-loop
     	when
+    		    $currentFact: CurrentFact(layer == 2)
+
             $training: Training(goal == Goal.WEIGHT_LOSS)
             $inputData: InputDataTraining(difficulty == Difficulty.LOW,
                                           equipment == false,
@@ -204,5 +250,7 @@ rule "When goal is Weight loss, difficulty is low and using equipment is false->
                        $filteredExercises: collectList($e)
             )
     	then
-            insert(new CurrentFact($filteredExercises));
+            $currentFact.setExerciseList($filteredExercises);
+                    $currentFact.setLayer(3);
+                    update($currentFact);
     	end
