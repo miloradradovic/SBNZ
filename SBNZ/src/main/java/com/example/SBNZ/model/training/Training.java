@@ -9,8 +9,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class Training {
 
     private List<Session> sessionList;
@@ -19,11 +17,20 @@ public class Training {
     private Goal goal;
     private List<Exercise> exercises = new ArrayList<>();
 
-	public List<Exercise> getExercises() {
-		return exercises;
+	public Training() {
 	}
 
-	public void setExercises(List<Exercise> exercises) {
+	public Training(List<Session> sessionList, double restTime, int numberOfSessions) {
+		this.sessionList = sessionList;
+		this.restTime = restTime;
+		this.numberOfSessions = numberOfSessions;
+	}
+
+	public Training(List<Session> sessionList, double restTime, int numberOfSessions, Goal goal, List<Exercise> exercises) {
+		this.sessionList = sessionList;
+		this.restTime = restTime;
+		this.numberOfSessions = numberOfSessions;
+		this.goal = goal;
 		this.exercises = exercises;
 	}
 
