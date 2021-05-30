@@ -31,19 +31,9 @@ public class DietService {
 
     public Diet getDiet(InputDataDiet inputData) {
     	
-        KieSession kieSession = kieContainer.newKieSession();
+        KieSession kieSession = kieContainer.newKieSession("dietSession");
         inputData.setMeals(mealRepository.findAll());
         kieSession.insert(inputData);
-    	QueryResults results = kieSession.getQueryResults("Recommend meals", MealType.BREAKFAST,500,600,30,50,10,30,20,40);
-
-    	for(QueryResultsRow queryResult : results) {
-    		List<Meal> meals = (List<Meal>) queryResult.get("$filteredMeals");
-    		for(Meal m : meals) {
-    			System.out.println(m);
-    		}
-    	}
-    	
-
         kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
         kieSession.dispose();
@@ -51,7 +41,7 @@ public class DietService {
     }
     
     public List<Meal> getMeals(SearchDiet input){
-    	KieSession kieSession = kieContainer.newKieSession();
+    	KieSession kieSession = kieContainer.newKieSession("dietSession");
     	InputDataDiet mockInput = new InputDataDiet();
     	mockInput.setMeals(mealRepository.findAll());
         kieSession.insert(mockInput);
@@ -63,7 +53,7 @@ public class DietService {
      		List<Meal> meals = (List<Meal>) queryResult.get("$filteredMeals");
      		return meals;
      	}
-     	
+     	kieSession.dispose();
      	return null;
     }
 }

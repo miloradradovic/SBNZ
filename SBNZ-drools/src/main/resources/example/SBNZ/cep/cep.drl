@@ -1,0 +1,61 @@
+package rules;
+
+import com.example.SBNZ.model.training.cep.CEPInput;
+import com.example.SBNZ.model.training.cep.HighHeartRateEvent;
+import com.example.SBNZ.model.training.cep.HighHeartRateAlarm;
+import com.example.SBNZ.model.training.cep.LowHeartRateEvent;
+import com.example.SBNZ.model.training.cep.LowHeartRateAlarm;
+import com.example.SBNZ.model.training.cep.StableHeartRateEvent;
+
+
+rule "When heart rate is high but alarm is not created"
+	no-loop
+	when
+        $cepInput: CEPInput($heartRate: heartRate, heartRate > 80.0)
+        not (HighHeartRateAlarm())
+	then
+        insert(new HighHeartRateEvent($heartRate, "WARNING! Heart rate " + Double.toString($heartRate) + " is too high!"));
+	end
+
+rule "When heart rate is low but alarm is not created"
+	no-loop
+	when
+        $cepInput: CEPInput($heartRate: heartRate, heartRate < 60.0)
+        not (LowHeartRateAlarm())
+	then
+        insert(new LowHeartRateEvent($heartRate, "WARNING! Heart rate " + Double.toString($heartRate) + " is too low!"));
+	end
+
+rule "When heart rate is stable"
+	no-loop
+	when
+        $cepInput: CEPInput($heartRate: heartRate, heartRate >= 60.0, heartRate <= 80.0)
+        not (LowHeartRateAlarm())
+	then
+        insert(new StableHeartRateEvent($heartRate, "Heart rate " + Double.toString($heartRate) + " is stable!"));
+	end
+
+
+rule "5 times high heart rate in 10 seconds"
+    no-loop
+	when
+		Number(intValue > 5) from accumulate (
+			$highEvent: HighHeartRateEvent()
+			over window:time(10s),
+			count($highEvent)
+		)
+	then
+	    insert(new HighHeartRateAlarm("Your heart rate is alarmingly high!"));
+end;
+
+rule "5 times low heart rate in 10 seconds"
+    no-loop
+	when
+		Number(intValue > 5) from accumulate (
+			$lowEvent: LowHeartRateEvent()
+			over window:time(10s),
+			count($lowEvent)
+		)
+	then
+	    insert(new LowHeartRateAlarm("Your heart rate is alarmingly low!"));
+end;

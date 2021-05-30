@@ -1,0 +1,14 @@
+package rules;
+
+import com.example.SBNZ.model.training.InputDataTraining;
+import com.example.SBNZ.model.training.Training;
+import com.example.SBNZ.model.training.Exercise;
+import com.example.SBNZ.model.training.Session;
+import com.example.SBNZ.model.training.CurrentFact;
+
+import com.example.SBNZ.enums.diet.Goal;
+import com.example.SBNZ.enums.training.Difficulty;
+import com.example.SBNZ.enums.training.ExerciseCategory;
+import com.example.SBNZ.enums.training.Muscle;
+
+// fact will go through this rule no matter the input
