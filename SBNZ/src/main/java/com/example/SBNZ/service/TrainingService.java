@@ -28,7 +28,7 @@ public class TrainingService {
 
     public List<Training> getTraining(InputDataTraining input) {
         input.setExerciseList(exerciseService.findAll());
-        KieSession kieSession = kieContainer.newKieSession();
+        KieSession kieSession = kieContainer.newKieSession("trainingSession");
         CurrentFact currentFact = new CurrentFact(2);
         kieSession.insert(input);
         kieSession.insert(currentFact);
