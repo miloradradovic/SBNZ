@@ -3,6 +3,7 @@ package com.example.SBNZ.api;
 import com.example.SBNZ.model.TestRuleModel;
 import com.example.SBNZ.model.training.InputDataTraining;
 import com.example.SBNZ.model.training.Training;
+import com.example.SBNZ.model.training.cep.CEPInput;
 import com.example.SBNZ.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,15 @@ public class TrainingController {
     	List<Training> result = trainingService.getTraining(input);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/cep", method = RequestMethod.POST)
+    public ResponseEntity<String> doCEP(@RequestBody List<CEPInput> input) {
+
+        trainingService.doCEP(input);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 
 }

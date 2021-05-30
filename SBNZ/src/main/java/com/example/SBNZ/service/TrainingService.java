@@ -2,6 +2,7 @@ package com.example.SBNZ.service;
 
 import com.example.SBNZ.model.training.CurrentFact;
 import com.example.SBNZ.model.training.Exercise;
+import com.example.SBNZ.model.training.cep.CEPInput;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,19 @@ public class TrainingService {
         kieSession.fireAllRules();
         kieSession.dispose();
         return input.getTraining();
+    }
+
+    public void doCEP(List<CEPInput> input) {
+        KieSession kieSession = kieContainer.newKieSession("cepKsession");
+        for (CEPInput cep : input) {
+            kieSession.insert(cep);
+            kieSession.fireAllRules();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        kieSession.dispose();
     }
 }
