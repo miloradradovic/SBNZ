@@ -6,9 +6,7 @@ import com.example.SBNZ.enums.diet.HealthIssue;
 import com.example.SBNZ.enums.diet.JunkFoodFrequency;
 import com.example.SBNZ.model.InputData;
 
-import antlr.collections.List;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
 public class InputDataDiet extends InputData {
 
@@ -17,6 +15,7 @@ public class InputDataDiet extends InputData {
 	private JunkFoodFrequency junkFoodFrequency;
 	private ArrayList<HealthIssue> healthIssues = new ArrayList<HealthIssue>();
 	private Diet diet;
+	private List<Meal> meals;
 	
 	public InputDataDiet(float currentWeight, float goalWeight, int programDuration, int fatPercentage,
 			int dailyCalBurn, JunkFoodFrequency junkFoodFrequency, ArrayList<HealthIssue> healthIssues) {
@@ -27,6 +26,25 @@ public class InputDataDiet extends InputData {
 		this.healthIssues = healthIssues;
 		this.diet = new Diet();
 	}
+	
+	public InputDataDiet() {
+		super();
+	}
+
+
+	public List<Meal> getMeals() {
+		return meals;
+	}
+
+	
+
+
+	public void setMeals(List<Meal> meals) {
+		this.meals = meals;
+	}
+
+
+
 
 	public int getFatPercentage() {
 		return fatPercentage;
@@ -66,6 +84,16 @@ public class InputDataDiet extends InputData {
 
 	public void setDiet(Diet diet) {
 		this.diet = diet;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "InputDataDiet [fatPercentage=" + fatPercentage + ", dailyCalBurn=" + dailyCalBurn
+				+ ", junkFoodFrequency=" + junkFoodFrequency + ", healthIssues=" + healthIssues + ", diet=" + diet
+				+ ", meals=" + meals + "]";
 	}
 	
 	

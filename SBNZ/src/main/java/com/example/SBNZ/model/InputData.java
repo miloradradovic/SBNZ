@@ -16,6 +16,12 @@ public abstract class InputData {
 		this.goalWeight = goalWeight;
 		this.programDuration = programDuration;
 	}
+	
+
+	public InputData() {
+		super();
+	}
+
 
 	public float getCurrentWeight() {
 		return currentWeight;
@@ -41,12 +47,7 @@ public abstract class InputData {
 		this.programDuration = programDuration;
 	}
 
-	@Override
-	public String toString() {
-		return "InputData [currentWeight=" + currentWeight + ", goalWeight=" + goalWeight + ", programDuration="
-				+ programDuration + "]";
-	}
-	
+
 	
 	
 }

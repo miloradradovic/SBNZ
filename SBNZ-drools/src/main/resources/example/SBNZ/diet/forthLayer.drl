@@ -1,0 +1,137 @@
+package rules;
+
+import com.example.SBNZ.model.diet.InputDataDiet;
+import com.example.SBNZ.model.diet.Diet;
+import com.example.SBNZ.enums.diet.Goal;
+import com.example.SBNZ.enums.diet.HealthIssue;
+import com.example.SBNZ.enums.diet.JunkFoodFrequency;
+import com.example.SBNZ.enums.diet.MealType;
+import com.example.SBNZ.model.diet.Meal;
+import java.util.ArrayList;
+
+
+rule "When junk food frequency is OFTEN remove foods which are more than 10 percent junk food and filter health Issues"
+	no-loop
+    	when
+            $diet: Diet(kCal > 0)
+            $inputData: InputDataDiet($healthIssues: healthIssues,
+                                          junkFoodFrequency == JunkFoodFrequency.OFTEN,
+                                          $meals: meals)
+            $healthIssue: HealthIssue() from $healthIssues
+        	accumulate(
+                           Meal($m: this,
+                                    !healthIssueTypes.contains($healthIssue),
+                                    junkPercentage <= 10
+                                    ) from $meals,
+                           $filteredMeals: collectList($m)
+                )
+    	then
+        $inputData.getDiet().setMeals($filteredMeals);
+        update($inputData);
+    end
+
+rule "When junk food frequency is SOMETIMES remove foods which are more than 20 percent junk food and filter health Issues"
+	no-loop
+    	when
+            $diet: Diet(kCal > 0)
+            $inputData: InputDataDiet($healthIssues: healthIssues,
+                                          junkFoodFrequency == JunkFoodFrequency.SOMETIMES,
+                                          $meals: meals)
+            $healthIssue: HealthIssue() from $healthIssues
+        	accumulate(
+                           Meal($m: this,
+                                    !healthIssueTypes.contains($healthIssue),
+                                    junkPercentage <= 20
+                                    ) from $meals,
+                           $filteredMeals: collectList($m)
+                )
+    	then
+        $inputData.getDiet().setMeals($filteredMeals);
+        update($inputData);
+    end
+   
+rule "When junk food frequency is RARELY remove foods which are more than 30 percent junk food and filter health Issues"
+	no-loop
+    	when
+            $diet: Diet(kCal > 0)
+            $inputData: InputDataDiet($healthIssues: healthIssues,
+                                          junkFoodFrequency == JunkFoodFrequency.RARELY,
+                                          $meals: meals)
+            $healthIssue: HealthIssue() from $healthIssues
+        	accumulate(
+                           Meal($m: this,
+                                    !healthIssueTypes.contains($healthIssue),
+                                    junkPercentage <= 30
+                                    ) from $meals,
+                           $filteredMeals: collectList($m)
+                )
+    	then
+        $inputData.getDiet().setMeals($filteredMeals);
+        update($inputData);
+    end
+    
+rule "When junk food frequency is NEVER dont remove any foods"
+	no-loop
+    	when
+            $diet: Diet(kCal > 0)
+            $inputData: InputDataDiet($healthIssues: healthIssues,
+                                          junkFoodFrequency == JunkFoodFrequency.NEVER,
+                                          $meals: meals)
+            $healthIssue: HealthIssue() from $healthIssues
+        	accumulate(
+                           Meal($m: this,
+                                    !healthIssueTypes.contains($healthIssue)
+                                    ) from $meals,
+                           $filteredMeals: collectList($m)
+                )
+    	then
+        $inputData.getDiet().setMeals($filteredMeals);
+        update($inputData);
+    end
+    
+rule "When kCal are set filter dinner type Meals."
+	no-loop
+    	when
+            $diet: Diet($goal: goal, kCal > 0, $kcalDinner: ((kCal/3) - (0.1*(kCal/3))), $kcalLunch: ((kCal/3) + (0.3*(kCal/3))),$kcalBreakfast: ((kCal/3) - (0.2*(kCal/3))) )
+            $inputData: InputDataDiet($meals: meals)
+        	accumulate(
+                           Meal($m: this,
+                           			mealType == MealType.DINNER,
+                                    kCal >= ((0.9*$kcalDinner)),
+                                    kCal <= ((1.1*$kcalDinner))
+                                    ) from $meals,
+                           $filteredDinners: collectList($m)
+                )
+            accumulate(
+                           Meal($m: this,
+                           			mealType == MealType.LUNCH,
+                                    kCal >= (0.9*$kcalLunch),
+                                    kCal <= (1.1*$kcalLunch)
+                                    ) from $meals,
+                           $filteredLunch: collectList($m)
+                )
+            accumulate(
+                           Meal($m: this,
+                           			mealType == MealType.BREAKFAST,
+                                    kCal >= ((0.9*$kcalBreakfast)),
+                                    kCal <= ((1.1*$kcalBreakfast))
+                                    ) from $meals,
+                           $filteredBreakfast: collectList($m)
+                )
+           accumulate(
+               	           Meal($m: this,
+               	           			$goal == Goal.MASS_GAIN,
+                           			mealType == MealType.SNACK
+                                    ) from $meals,
+                           $filteredSnacks: collectList($m)
+                )
+    	then
+    	ArrayList<Meal> list = new ArrayList<Meal>();
+    	list.addAll($filteredDinners);
+    	list.addAll($filteredLunch);
+    	list.addAll($filteredBreakfast);
+    	list.addAll($filteredSnacks);
+        $inputData.getDiet().setMeals(list);
+        update($inputData);
+    end
+   

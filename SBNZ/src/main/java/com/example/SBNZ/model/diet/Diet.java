@@ -1,6 +1,7 @@
 package com.example.SBNZ.model.diet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 
@@ -38,7 +39,7 @@ public class Diet {
     //hidden
     private Goal goal;
     
-    private ArrayList<Meal> meals = new ArrayList<Meal>();
+    private List<Meal> meals;
 
     public Diet(Goal goal) {
     	this.goal = goal;
@@ -95,11 +96,13 @@ public class Diet {
 		this.goal = goal;
 	}
 
-	public ArrayList<Meal> getMeals() {
+	
+	
+	public List<Meal> getMeals() {
 		return meals;
 	}
 
-	public void setMeals(ArrayList<Meal> meals) {
+	public void setMeals(List<Meal> meals) {
 		this.meals = meals;
 	}
 

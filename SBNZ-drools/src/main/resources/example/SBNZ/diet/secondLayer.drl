@@ -1,0 +1,92 @@
+package rules;
+
+import com.example.SBNZ.model.diet.InputDataDiet;
+import com.example.SBNZ.model.diet.Diet;
+import com.example.SBNZ.enums.diet.Goal;
+
+rule "When goal is to lose weight set minimum, maximum calorie deficit and recommended time"
+	no-loop
+	when
+		$diet: Diet(goal == Goal.WEIGHT_LOSS)
+	    $inputData: InputDataDiet(	$recommendedTime: ((currentWeight - goalWeight)*15), //recommended days
+	    							$recommendedDeficit: ((currentWeight - goalWeight)*40), //recommended cal deficit
+									$recommendedCalories: (currentWeight*40 - (currentWeight - goalWeight)*40))
+	then
+		$diet.setCalorieMax((int)$recommendedCalories);
+		$diet.setCalorieMin((int)($recommendedCalories - $recommendedDeficit));		
+		$diet.setRecommendedTime((int)$recommendedTime);
+		update($diet);
+	end
+
+rule "When recommended time is bigger then desired program duration recommend lower daily kCal value"
+	no-loop
+	when
+		$inputData: InputDataDiet($programDuration: programDuration,
+	    							$dailyCalBurn: dailyCalBurn )
+		$diet: Diet(goal == Goal.WEIGHT_LOSS, recommendedTime > $programDuration,
+									$recommendedTime: ((double) recommendedTime),
+	    							$calorieMax: calorieMax,
+	    							$calorieMin: calorieMin)
+	then
+		$diet.setkCal((int) ($calorieMax - ($calorieMax - $calorieMin)*(1.0 - ($programDuration/$recommendedTime)) + $dailyCalBurn));
+		update($diet);
+	end
+
+
+rule "When recommended time is less then desired program duration recommend maximum daily kCal value"
+	no-loop
+	when
+		$inputData: InputDataDiet($programDuration: programDuration,
+	    							$dailyCalBurn: dailyCalBurn )
+		$diet: Diet(goal == Goal.WEIGHT_LOSS, recommendedTime <= $programDuration,
+	    							$calorieMax: calorieMax)
+	then
+		$diet.setkCal((int) $calorieMax + $dailyCalBurn);
+		update($diet);
+	end
+	
+
+//THIS IS SECOND BRANCH
+
+rule "When goal is to gain mass set minimum, maximum calorie deficit and recommended time"
+	no-loop
+	when
+		$diet: Diet(goal == Goal.MASS_GAIN)
+	    $inputData: InputDataDiet(	$recommendedTime: ((goalWeight - currentWeight)*15), //recommended days
+	    							$recommendedDeficit: ((goalWeight - currentWeight)*40), //recommended cal deficit
+									$recommendedCalories: (currentWeight*40 - (goalWeight - currentWeight)*40))
+	then
+		$diet.setCalorieMax((int)$recommendedCalories);
+		$diet.setCalorieMin((int)($recommendedCalories - $recommendedDeficit));		
+		$diet.setRecommendedTime((int)$recommendedTime);
+		update($diet);
+	end
+
+rule "When goal is to gain mass and recommended time is bigger then desired program duration recommend lower daily kCal value"
+	no-loop
+	when
+		$inputData: InputDataDiet($programDuration: programDuration,
+	    							$dailyCalBurn: dailyCalBurn )
+		$diet: Diet(recommendedTime > $programDuration,
+									goal == Goal.MASS_GAIN,
+									$recommendedTime: ((double) recommendedTime),
+	    							$calorieMax: calorieMax,
+	    							$calorieMin: calorieMin)
+	then
+		$diet.setkCal((int) ($calorieMax - ($calorieMax - $calorieMin)*($programDuration/$recommendedTime) + $dailyCalBurn));
+		update($diet);
+	end
+
+
+rule "When goal is to gain mass and recommended time is less then desired program duration recommend minimum daily kCal value"
+	no-loop
+	when
+		$inputData: InputDataDiet($programDuration: programDuration,
+	    							$dailyCalBurn: dailyCalBurn )
+		$diet: Diet(goal == Goal.MASS_GAIN, recommendedTime <= $programDuration,
+	    							$calorieMin: calorieMin)
+	then
+		$diet.setkCal((int) $calorieMin + $dailyCalBurn);
+		update($diet);
+	end
+	

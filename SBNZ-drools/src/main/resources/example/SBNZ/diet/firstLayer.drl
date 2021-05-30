@@ -1,0 +1,24 @@
+package rules;
+
+import com.example.SBNZ.model.diet.InputDataDiet;
+import com.example.SBNZ.model.diet.Diet;
+import com.example.SBNZ.enums.diet.Goal;
+
+
+rule "When Current Weight is less then Goal Weight set goal to Weight Loss"
+	agenda-group "Ruleflow1"
+	no-loop
+	when
+		$inputData: InputDataDiet(currentWeight > goalWeight)
+	then
+		insert(new Diet(Goal.WEIGHT_LOSS));
+	end
+	
+rule "When Current Weight is equal or above Goal Weight set goal to Mass Gain"
+	agenda-group "Ruleflow1"
+	no-loop
+	when
+		$inputData: InputDataDiet(currentWeight <= goalWeight)
+	then
+		insert(new Diet(Goal.MASS_GAIN));
+	end

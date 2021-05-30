@@ -1,0 +1,82 @@
+package rules;
+
+import com.example.SBNZ.model.diet.InputDataDiet;
+import com.example.SBNZ.model.diet.Diet;
+import com.example.SBNZ.enums.diet.Goal;
+
+
+
+
+rule "When goal is weight loss and recommended number of kCal is above 2000 recommend kCal/10 grams of nutrition values."
+	no-loop
+	when
+		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
+		$diet: Diet(goal == Goal.WEIGHT_LOSS, kCal > 2000, $kCal: kCal)
+	then
+		double nutrition_part = $kCal/30;
+		double lower_bound = nutrition_part*$fatPercentage;
+	
+		$diet.setFats((int) (nutrition_part - lower_bound));
+		$diet.setProteins((int) (nutrition_part + lower_bound/2));
+		$diet.setCarbonHydrates((int) (nutrition_part + lower_bound/2));
+		
+		update($diet);
+		$inputData.setDiet($diet);
+		update($inputData);
+	end
+	
+rule "When goal is weight loss and recommended number of kCal is below 2000 recommend 200 grams of nutrition values."
+	no-loop
+	when
+		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
+		$diet: Diet(goal == Goal.WEIGHT_LOSS, kCal <= 2000, $kCal: kCal)
+	then
+		double nutrition_part = 200/3;
+		double lower_bound = nutrition_part*$fatPercentage;
+		
+		$diet.setFats((int) (nutrition_part - lower_bound));
+		$diet.setProteins((int) (nutrition_part + lower_bound/2));
+		$diet.setCarbonHydrates((int) (nutrition_part + lower_bound/2));
+		
+		update($diet);
+		$inputData.setDiet($diet);
+		update($inputData);
+	end
+
+//SECOND BRANCH
+
+rule "When goal is mass gain and recommended number of kCal is above 2000 recommend kCal/10 grams of nutrition values."
+	no-loop
+	when
+		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
+		$diet: Diet(goal == Goal.MASS_GAIN, kCal > 2000, $kCal: kCal)
+	then
+		double nutrition_part = $kCal/30;
+		double lower_bound = nutrition_part*$fatPercentage;
+	
+		$diet.setFats((int) (nutrition_part + lower_bound/2));
+		$diet.setProteins((int) (nutrition_part + lower_bound/2));
+		$diet.setCarbonHydrates((int) (nutrition_part - lower_bound));
+		
+		update($diet);
+		$inputData.setDiet($diet);
+		update($inputData);
+	end
+	
+rule "When goal is mass gain and recommended number of kCal is below 2000 recommend 200 grams of nutrition values."
+	no-loop
+	when
+		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
+		$diet: Diet(goal == Goal.MASS_GAIN, kCal <= 2000, $kCal: kCal)
+	then
+		double nutrition_part = 200/3;
+		double lower_bound = nutrition_part*$fatPercentage;
+		
+		$diet.setFats((int) (nutrition_part + lower_bound/2));
+		$diet.setProteins((int) (nutrition_part + lower_bound/2));
+		$diet.setCarbonHydrates((int) (nutrition_part - lower_bound));
+		
+		update($diet);
+		$inputData.setDiet($diet);
+		update($inputData);
+	end
