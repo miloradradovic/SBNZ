@@ -35,7 +35,7 @@ rule "When goal is Mass gain, difficulty is high and using equipment is true-> g
         update($currentFact);
 	end
 
-rule "When goal is Mass gain, difficulty is medium and using equipment is true-> idk"
+rule "When goal is Mass gain, difficulty is medium and using equipment is true-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -55,7 +55,7 @@ rule "When goal is Mass gain, difficulty is medium and using equipment is true->
         update($currentFact);
     end
 
-rule "When goal is Mass gain, difficulty is low and using equipment is true-> idk"
+rule "When goal is Mass gain, difficulty is low and using equipment is true-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -75,7 +75,7 @@ rule "When goal is Mass gain, difficulty is low and using equipment is true-> id
                     update($currentFact);
     	end
 
-rule "When goal is Mass gain, difficulty is high and using equipment is false-> idk"
+rule "When goal is Mass gain, difficulty is high and using equipment is false-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -95,7 +95,7 @@ rule "When goal is Mass gain, difficulty is high and using equipment is false-> 
                     update($currentFact);
     	end
 
-rule "When goal is Mass gain, difficulty is medium and using equipment is false-> idk"
+rule "When goal is Mass gain, difficulty is medium and using equipment is false-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -115,7 +115,7 @@ rule "When goal is Mass gain, difficulty is medium and using equipment is false-
                     update($currentFact);
     	end
 
-rule "When goal is Mass gain, difficulty is low and using equipment is false-> idk"
+rule "When goal is Mass gain, difficulty is low and using equipment is false-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -135,7 +135,7 @@ rule "When goal is Mass gain, difficulty is low and using equipment is false-> i
                     update($currentFact);
     	end
 
-rule "When goal is Weight loss, difficulty is high and using equipment is true-> idk"
+rule "When goal is Weight loss, difficulty is high and using equipment is true-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -155,7 +155,7 @@ rule "When goal is Weight loss, difficulty is high and using equipment is true->
                     update($currentFact);
     	end
 
-rule "When goal is Weight loss, difficulty is medium and using equipment is true-> idk"
+rule "When goal is Weight loss, difficulty is medium and using equipment is true-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -175,7 +175,7 @@ rule "When goal is Weight loss, difficulty is medium and using equipment is true
                     update($currentFact);
     	end
 
-rule "When goal is Weight loss, difficulty is low and using equipment is true-> idk"
+rule "When goal is Weight loss, difficulty is low and using equipment is true-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -195,7 +195,7 @@ rule "When goal is Weight loss, difficulty is low and using equipment is true-> 
                     update($currentFact);
     	end
 
-rule "When goal is Weight loss, difficulty is high and using equipment is false-> idk"
+rule "When goal is Weight loss, difficulty is high and using equipment is false-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -215,7 +215,7 @@ rule "When goal is Weight loss, difficulty is high and using equipment is false-
                     update($currentFact);
     	end
 
-rule "When goal is Weight loss, difficulty is medium and using equipment is false-> idk"
+rule "When goal is Weight loss, difficulty is medium and using equipment is false-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)
@@ -235,7 +235,7 @@ rule "When goal is Weight loss, difficulty is medium and using equipment is fals
                     update($currentFact);
     	end
 
-rule "When goal is Weight loss, difficulty is low and using equipment is false-> idk"
+rule "When goal is Weight loss, difficulty is low and using equipment is false-> get adequate exercises"
 	no-loop
     	when
     		    $currentFact: CurrentFact(layer == 2)

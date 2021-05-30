@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value="/training")
 public class TrainingController {
@@ -18,9 +20,9 @@ public class TrainingController {
     TrainingService trainingService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Training> getTraining(@RequestBody InputDataTraining input) {
+    public ResponseEntity<List<Training>> getTraining(@RequestBody InputDataTraining input) {
 
-    	Training result = trainingService.getTraining(input);
+    	List<Training> result = trainingService.getTraining(input);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

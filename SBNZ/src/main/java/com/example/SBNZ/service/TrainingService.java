@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.example.SBNZ.model.training.InputDataTraining;
 import com.example.SBNZ.model.training.Training;
 
+import java.util.List;
+
 @Service
 public class TrainingService {
 
@@ -23,7 +25,7 @@ public class TrainingService {
         this.kieContainer = kieContainer;
     }
 
-    public Training getTraining(InputDataTraining input) {
+    public List<Training> getTraining(InputDataTraining input) {
         input.setExerciseList(exerciseService.findAll());
         KieSession kieSession = kieContainer.newKieSession();
         CurrentFact currentFact = new CurrentFact(2);
