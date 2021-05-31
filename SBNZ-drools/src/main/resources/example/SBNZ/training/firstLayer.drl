@@ -4,6 +4,7 @@ import com.example.SBNZ.model.training.InputDataTraining;
 import com.example.SBNZ.model.training.Training;
 import com.example.SBNZ.model.training.Exercise;
 import com.example.SBNZ.model.training.Session;
+import com.example.SBNZ.model.training.CurrentFact;
 
 import com.example.SBNZ.enums.diet.Goal;
 import com.example.SBNZ.enums.training.Difficulty;
@@ -17,7 +18,8 @@ rule "When Current Weight is less than Goal Weight -> set goal to Weight Loss"
 	when
 		$inputData: InputDataTraining(currentWeight > goalWeight)
 	then
-		insert(new Training(Goal.WEIGHT_LOSS));
+	    System.out.println("FIRST LAYER RULE: SET WEIGHT LOSS");
+		insert(new CurrentFact(Goal.WEIGHT_LOSS));
 	end
 
 rule "When Current Weight is equal or above than Goal Weight -> set goal to Mass gain"
@@ -26,5 +28,6 @@ rule "When Current Weight is equal or above than Goal Weight -> set goal to Mass
 	when
 		$inputData: InputDataTraining(currentWeight <= goalWeight)
 	then
-		insert(new Training(Goal.MASS_GAIN));
+	    System.out.println("FIRST LAYER RULE: SET MASS GAIN");
+		insert(new CurrentFact(Goal.MASS_GAIN));
 	end

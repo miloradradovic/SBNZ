@@ -11,21 +11,36 @@ import com.example.SBNZ.enums.training.Difficulty;
 import com.example.SBNZ.enums.training.ExerciseCategory;
 import com.example.SBNZ.enums.training.Muscle;
 
+import java.util.List;
+
+function boolean containsAtLeastOneElement(Exercise exercise, InputDataTraining inputData){
+  for (Muscle muscle : inputData.getInjuries()) {
+    if (exercise.getMuscleList().contains(muscle)) {
+        return false;
+    }
+  }
+  return true;
+}
+
 // fact will go through this rule no matter the input
 rule "When rules are filtered by all the parameters, then filter by muscles"
 	no-loop
 	when
-        $currentFact: CurrentFact($exerciseList: exerciseList, layer == 3)
+        $currentFact: CurrentFact($exerciseList: exerciseList, exerciseList.size() > 0, restTime == -1)
         $inputData: InputDataTraining($injuries: injuries)
-        $muscle: Muscle() from $injuries
+        // $muscle: Muscle() from $injuries
         accumulate(
                            Exercise($e: this,
-                                    !muscleList.contains($muscle)
+                                    containsAtLeastOneElement($e, $inputData)
+                                    // !muscleList.contains($muscle)
                                     ) from $exerciseList,
                            $filteredExercises: collectList($e)
                 )
 	then
+	    System.out.println("THIRD LAYER RULE: FILTER EXERCISES BY INJURIES");
+	    System.out.println($filteredExercises);
         $currentFact.setExerciseList($filteredExercises);
-        $currentFact.setLayer(4);
+        $currentFact.setDaysWeek(0);
+        $currentFact.setRestTime(0);
         update($currentFact);
 	end

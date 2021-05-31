@@ -13,6 +13,18 @@ import com.example.SBNZ.enums.training.Muscle;
 import java.util.ArrayList;
 import java.util.List;
 
+rule "When daysweek and resttime is generated, set the session"
+	no-loop
+	when
+	    $inputData: InputDataTraining(exercises.size() == 0)
+        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek >= 3, daysWeek <= 5)
+	then
+	    System.out.println("FIFTH LAYER RULE: SET EXERCISE LIST");
+        $inputData.setExercises($exerciseList);
+        update($inputData);
+	end
+
+/*
 rule "Lesgo"
 	no-loop
 	when
@@ -58,3 +70,4 @@ rule "Lesg2o"
         $inputData.getTraining().get($inputData.getTraining().size()-1).addSession(session);
         update($inputData);        
 	end
+*/
