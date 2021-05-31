@@ -51,6 +51,7 @@ public class DietService {
 
      	for(QueryResultsRow queryResult : results) {
      		List<Meal> meals = (List<Meal>) queryResult.get("$filteredMeals");
+     		kieSession.dispose();
      		return meals;
      	}
      	kieSession.dispose();

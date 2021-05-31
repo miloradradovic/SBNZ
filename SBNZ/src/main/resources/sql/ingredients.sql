@@ -36,6 +36,8 @@ insert into health_issue_types(meal_id, health_issue_types) values (1, 'HEART_PR
 
 insert into health_issue_types(meal_id, health_issue_types) values (2, 'HIGH_FAT');
 
+insert into health_issue_types(meal_id, health_issue_types) values (3, 'HIGH_FAT');
+
 insert into health_issue_types(meal_id, health_issue_types) values (7, 'DIABETES');
 
 

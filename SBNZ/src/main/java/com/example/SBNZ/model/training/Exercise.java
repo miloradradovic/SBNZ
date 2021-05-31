@@ -64,6 +64,15 @@ public class Exercise {
         this.equipment = equipment;
         this.exerciseCategory = exerciseCategory;
     }
+    
+    public boolean containsAny(List<Exercise> elements) {
+    	for(Exercise ex: elements) {
+    		if(this.muscleList.contains(ex)) {
+    			return false;
+    		}
+    	}
+    	return true;
+    }
 
     public int getId() {
         return id;
@@ -120,4 +129,13 @@ public class Exercise {
     public void setExerciseCategory(ExerciseCategory exerciseCategory) {
         this.exerciseCategory = exerciseCategory;
     }
+
+	@Override
+	public String toString() {
+		return "Exercise [id=" + id + ", name=" + name + ", description=" + description + ", muscleList=" + muscleList
+				+ ", difficulty=" + difficulty + ", equipment=" + equipment + ", exerciseCategory=" + exerciseCategory
+				+ "]";
+	}
+    
+    
 }

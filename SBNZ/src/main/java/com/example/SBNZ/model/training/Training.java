@@ -1,25 +1,21 @@
 package com.example.SBNZ.model.training;
 
-import com.example.SBNZ.enums.diet.Goal;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import com.example.SBNZ.enums.diet.Goal;
+import com.example.SBNZ.enums.training.Muscle;
 
 public class Training {
 
-    private List<Session> sessionList;
+    private List<Session> sessionList = new ArrayList<Session>();
     private double restTime;
     private int numberOfSessions;
     private Goal goal;
-    private List<Exercise> exercises = new ArrayList<>();
+    private List<Muscle> muscles = new ArrayList<Muscle>();
 
 	public Training() {
+		
 	}
 
 	public Training(List<Session> sessionList, double restTime, int numberOfSessions) {
@@ -28,12 +24,18 @@ public class Training {
 		this.numberOfSessions = numberOfSessions;
 	}
 
-	public Training(List<Session> sessionList, double restTime, int numberOfSessions, Goal goal, List<Exercise> exercises) {
+	public Training(List<Session> sessionList, double restTime, int numberOfSessions, Goal goal) {
 		this.sessionList = sessionList;
 		this.restTime = restTime;
 		this.numberOfSessions = numberOfSessions;
 		this.goal = goal;
-		this.exercises = exercises;
+	}
+	
+	public void addSession(Session session) {
+		this.sessionList.add(session);
+		for(Muscle m: session.getExercise().getMuscleList()) {
+			this.muscles.add(m);
+		}
 	}
 
 	public Goal getGoal() {
@@ -62,10 +64,19 @@ public class Training {
 	public void setNumberOfSessions(int numberOfSessions) {
 		this.numberOfSessions = numberOfSessions;
 	}
+	
+	
     
-    public Training(Goal goal) {
+    public List<Muscle> getMuscles() {
+		return muscles;
+	}
+
+	public void setMuscles(List<Muscle> muscles) {
+		this.muscles = muscles;
+	}
+
+	public Training(Goal goal) {
 		this.goal = goal;
-		this.sessionList = new ArrayList<>();
 	}
 
 }

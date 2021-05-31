@@ -75,7 +75,6 @@ rule "When goal is mass gain and recommended number of kCal is below 2000 recomm
 		$diet.setFats((int) (nutrition_part + lower_bound/2));
 		$diet.setProteins((int) (nutrition_part + lower_bound/2));
 		$diet.setCarbonHydrates((int) (nutrition_part - lower_bound));
-		
 		update($diet);
 		$inputData.setDiet($diet);
 		update($inputData);

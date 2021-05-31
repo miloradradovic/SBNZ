@@ -85,6 +85,7 @@ rule "When junk food frequency is NEVER dont remove any foods"
                            $filteredMeals: collectList($m)
                 )
     	then
+    	System.out.println($diet.getkCal());
         $inputData.getDiet().setMeals($filteredMeals);
         update($inputData);
     end

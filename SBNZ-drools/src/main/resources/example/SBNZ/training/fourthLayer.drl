@@ -22,6 +22,7 @@ rule "When rules are filtered by all the parameters and goal is mass gain, then 
         double calculatedDuration = (($goalWeight - $currentWeight)/$programDuration)*10;
         $currentFact.setDaysWeek((int)calculatedDuration);
         $currentFact.setRestTime(60);
+        $currentFact.setLayer(5);
         update($currentFact);
 	end
 
@@ -34,14 +35,15 @@ rule "When rules are filtered by all the parameters and goal is weight loss, the
 	then
         double calculatedDuration = (($currentWeight - $goalWeight)/$programDuration)*10;
         $currentFact.setDaysWeek((int)calculatedDuration);
-        $currentFact.setRestTime(60);
+        $currentFact.setRestTime(30);
+        $currentFact.setLayer(5);
         update($currentFact);
 	end
 
 rule "When daysweek is < 3, then set it to 3"
 	no-loop
 	when
-        $currentFact: CurrentFact($exerciseList: exerciseList, layer == 4, daysWeek != 0 && daysWeek < 3) // exerciselist: final list of exercises
+        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek != 0 && daysWeek < 3) // exerciselist: final list of exercises
 	then
         $currentFact.setDaysWeek(3);
         update($currentFact);
@@ -50,8 +52,9 @@ rule "When daysweek is < 3, then set it to 3"
 rule "When daysweek is > 5, then set it to 5"
 	no-loop
 	when
-        $currentFact: CurrentFact($exerciseList: exerciseList, layer == 4, daysWeek != 0 && daysWeek > 5) // exerciselist: final list of exercises
+        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek != 0 && daysWeek > 5) // exerciselist: final list of exercises
 	then
         $currentFact.setDaysWeek(5);
         update($currentFact);
 	end
+
