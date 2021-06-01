@@ -12,7 +12,7 @@ public class InputDataTraining extends InputData {
 	private Difficulty difficulty;
 	private ArrayList<Muscle> injuries;
 	private boolean equipment;
-	private List<Training> training;
+	private List<Training> training = new ArrayList<>();
 	private List<Exercise> exercises = new ArrayList<>();
 
 	public InputDataTraining(float currentWeight, float goalWeight, int programDuration, Difficulty difficulty,
@@ -21,7 +21,6 @@ public class InputDataTraining extends InputData {
 		this.difficulty = difficulty;
 		this.injuries = injuries;
 		this.equipment = equipment;
-		this.training = new ArrayList<>();
 	}
 
 	public void setExercises(List<Exercise> exercises) {
@@ -70,8 +69,4 @@ public class InputDataTraining extends InputData {
 				+ ", training=" + training + "]" + super.toString();
 	}
 
-
-	
-	
-		
 }

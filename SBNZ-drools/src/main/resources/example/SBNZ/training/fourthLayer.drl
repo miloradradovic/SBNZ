@@ -12,17 +12,73 @@ import com.example.SBNZ.enums.training.ExerciseCategory;
 import com.example.SBNZ.enums.training.Muscle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-rule "When daysweek and resttime is generated, set the session"
+function int generateRandomIndex(int listSize) {
+    Random random = new Random();
+    return random.nextInt(listSize-1);
+}
+
+// first step
+rule "When daysweek and resttime is generated, and list of trainings is empty, generate the first training"
 	no-loop
 	when
-	    $inputData: InputDataTraining(exercises.size() == 0)
-        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek >= 3, daysWeek <= 5)
+	    $inputData: InputDataTraining($trainings: training, training.size() == 0)
+        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek >= 3, daysWeek <= 5,
+                                  $restTime: restTime, $numberOfSessions: numberOfSessions, $goal: goal)
 	then
-	    System.out.println("FOURTH LAYER RULE: SET EXERCISE LIST");
-        $inputData.setExercises($exerciseList);
+	    System.out.println("FOURTH LAYER RULE: INITIAL CREATE TRAINING");
+        $inputData.getTraining().add(new Training($restTime, $numberOfSessions, $goal));
         update($inputData);
 	end
+
+rule "When training with less than 5 sessions exists, create a new session"
+    when
+        $inputData: InputDataTraining($trainings: training, training.size() > 0, training.get(training.size() - 1).getSessionList().size() < 4,
+                                      $lastTraining: training.get(training.size() - 1))
+        $currentFact: CurrentFact($exerciseList: exerciseList, $goal: goal)
+
+        accumulate(
+                           Exercise($e: this,
+                                    $muscleList: muscleList
+                                    ) from $exerciseList and
+                                    Number(intValue == 0) from accumulate(
+                                        Muscle($m: this, $muscleList.contains(this)// this memberOf $muscleList
+                                        ) from $lastTraining.getMuscles(),
+                                        count(1)
+                                    ),
+                           $filteredExercises: collectList($e)
+                )
+    then
+        System.out.println("FOURTH LAYER RULE: ADD SESSION WHILE NO OF SESSIONS < 5");
+        $lastTraining.addSession($filteredExercises);
+        update($inputData);
+    end
+
+rule "When last created training is full, create a new training"
+    no-loop
+    when
+        $currentFact: CurrentFact($exerciseList: exerciseList, $goal: goal, $restTime: restTime,
+                                  $numberOfSessions: numberOfSessions, $daysWeek: daysWeek)
+        $inputData: InputDataTraining($trainings: training, training.size() > 0, training.get(training.size() - 1).getSessionList().size() == 4,
+                                              training.size() < $daysWeek)
+
+    then
+        System.out.println("FOURTH LAYER RULE: LAST TRAINING FULL AND SIZE < DAYSWEEK -> GENERATE NEW TRAINING");
+        $inputData.getTraining().add(new Training($restTime, $numberOfSessions, $goal));
+                update($inputData);
+    end
+
+// last step
+rule "When number of trainings is equal to daysOfWeek -> the end"
+    no-loop
+    when
+        $currentFact: CurrentFact($daysWeek: daysWeek)
+        $inputData: InputDataTraining($trainings: training, training.size() > 0, training.size() == $daysWeek)
+    then
+        System.out.println("FINISHED GENERATING TRAININGS.");
+        drools.halt();
+    end
 
 /*
 rule "Lesgo"

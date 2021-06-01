@@ -15,6 +15,7 @@ public class CurrentFact {
     private List<Exercise> exerciseList = new ArrayList<>();
     private int daysWeek = -1;
     private int restTime = -1;
+    private int numberOfSessions = -1;
 
     public CurrentFact() {
 
@@ -26,6 +27,14 @@ public class CurrentFact {
 
     public CurrentFact(List<Exercise> exerciseList) {
         this.exerciseList = exerciseList;
+    }
+
+    public int getNumberOfSessions() {
+        return numberOfSessions;
+    }
+
+    public void setNumberOfSessions(int numberOfSessions) {
+        this.numberOfSessions = numberOfSessions;
     }
 
     public int getDaysWeek() {

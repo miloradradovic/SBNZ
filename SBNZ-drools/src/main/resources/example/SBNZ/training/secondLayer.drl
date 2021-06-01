@@ -15,7 +15,7 @@ rule "When goal is Mass gain, difficulty and using equipment are given-> get ade
 	no-loop
 	when
 	    $exercises: List(size > 0) from collect(Exercise())
-	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN)
+	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN, daysWeek == -1)
         $inputData: InputDataTraining($difficulty: difficulty,
                                       $equipment: equipment,
                                       $injuries: injuries)
@@ -46,7 +46,7 @@ rule "When goal is Weight loss, difficulty and using equipment are given-> get a
 	no-loop
 	when
 	    $exercises: List(size > 0) from collect(Exercise())
-	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS, daysWeek == -1)
         $inputData: InputDataTraining($difficulty: difficulty,
                                       $equipment: equipment,
                                       $injuries: injuries)

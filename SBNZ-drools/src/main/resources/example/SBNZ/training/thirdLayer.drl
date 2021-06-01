@@ -21,6 +21,7 @@ rule "When rules are filtered by all the parameters and goal is mass gain, then 
         double calculatedDuration = (($goalWeight - $currentWeight)/$programDuration)*10;
         $currentFact.setDaysWeek((int)calculatedDuration);
         $currentFact.setRestTime(60);
+        $currentFact.setNumberOfSessions(5);
         update($currentFact);
 	end
 
@@ -54,6 +55,7 @@ rule "When rules are filtered by all the parameters and goal is weight loss, the
             double calculatedDuration = (($currentWeight - $goalWeight)/$programDuration)*10;
             $currentFact.setDaysWeek((int)calculatedDuration);
             $currentFact.setRestTime(30);
+            $currentFact.setNumberOfSessions(3);
             update($currentFact);
 	end
 
