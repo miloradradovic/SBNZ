@@ -18,7 +18,7 @@ rule "When Current Weight is less than Goal Weight -> set goal to Weight Loss"
 	when
 		$inputData: InputDataTraining(currentWeight > goalWeight)
 	then
-	    System.out.println("FIRST LAYER RULE: SET WEIGHT LOSS");
+	    System.out.println("[TRAINING] First layer - setting the goal to weight loss");
 		insert(new CurrentFact(Goal.WEIGHT_LOSS));
 	end
 
@@ -28,6 +28,6 @@ rule "When Current Weight is equal or above than Goal Weight -> set goal to Mass
 	when
 		$inputData: InputDataTraining(currentWeight <= goalWeight)
 	then
-	    System.out.println("FIRST LAYER RULE: SET MASS GAIN");
+		System.out.println("[TRAINING] First layer - setting the goal to mass gain");
 		insert(new CurrentFact(Goal.MASS_GAIN));
 	end

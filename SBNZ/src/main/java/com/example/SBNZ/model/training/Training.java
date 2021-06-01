@@ -39,8 +39,6 @@ public class Training {
 	public void addSession(List<Exercise> exercises) {
 		Random rand = new Random();
 		int randomIndex = -1;
-		System.out.println("USAO U ADD SESSION");
-		System.out.println(exercises.size());
 		if (exercises.size() == 1) {
 			randomIndex = 0;
 		}else {
