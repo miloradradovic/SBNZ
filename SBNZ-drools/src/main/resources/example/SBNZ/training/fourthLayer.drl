@@ -10,51 +10,64 @@ import com.example.SBNZ.enums.diet.Goal;
 import com.example.SBNZ.enums.training.Difficulty;
 import com.example.SBNZ.enums.training.ExerciseCategory;
 import com.example.SBNZ.enums.training.Muscle;
+import java.util.ArrayList;
+import java.util.List;
 
-rule "When rules are filtered by all the parameters and goal is mass gain, then generate daysweek and resttime"
+rule "When daysweek and resttime is generated, set the session"
 	no-loop
 	when
-        $currentFact: CurrentFact(goal == Goal.MASS_GAIN, $exerciseList: exerciseList, daysWeek == 0)
-        $inputData: InputDataTraining($goalWeight: goalWeight, $programDuration: programDuration, $currentWeight: currentWeight)
+	    $inputData: InputDataTraining(exercises.size() == 0)
+        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek >= 3, daysWeek <= 5)
 	then
-	    System.out.println("FOURTH LAYER RULE: CALCULATE DAYSWEEK AND RESTTIME");
-        double calculatedDuration = (($goalWeight - $currentWeight)/$programDuration)*10;
-        $currentFact.setDaysWeek((int)calculatedDuration);
-        $currentFact.setRestTime(60);
-        update($currentFact);
+	    System.out.println("FOURTH LAYER RULE: SET EXERCISE LIST");
+        $inputData.setExercises($exerciseList);
+        update($inputData);
 	end
 
-rule "When daysweek is < 3, then set it to 3"
+/*
+rule "Lesgo"
 	no-loop
 	when
-        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek != 0, daysWeek < 3, daysWeek != -1)
+		$inputData: InputDataTraining(training.size() == 0)
+        $currentFact: CurrentFact(layer == 5, $exerciseList: exerciseList, daysWeek >= 3, daysWeek <= 5 )
 	then
-	    System.out.println("FOURTH LAYER RULE: DAYSWEEK IS LESS THAN 3");
-        $currentFact.setDaysWeek(3);
-        update($currentFact);
+        $inputData.getTraining().add(new Training());
+        Session session = new Session();
+        System.out.println($currentFact.getDaysWeek());
+        session.setExercise((Exercise) $exerciseList.get(0));
+        $inputData.getTraining().get($inputData.getTraining().size()-1).addSession(session);
+        update($inputData);
 	end
 
-rule "When daysweek is > 5, then set it to 5"
+rule "End condition"
 	no-loop
 	when
-        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek != 0, daysWeek > 5, daysWeek != -1)
+	    $currentFact: CurrentFact(layer == 5, $daysOfWeek: daysWeek)
+		$inputData: InputDataTraining(training.size() == $daysOfWeek)
 	then
-	    System.out.println("FOURTH LAYER RULE: DAYSWEEK IS GREATER THAN 5");
-        $currentFact.setDaysWeek(5);
-        update($currentFact);
+		System.out.println("we're done");
+        update($inputData);
 	end
 
+rule "Lesg2o"
 
-rule "When rules are filtered by all the parameters and goal is weight loss, then generate daysweek and resttime"
-	no-loop
 	when
-            $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS, $exerciseList: exerciseList, daysWeek == 0)
-            $inputData: InputDataTraining($goalWeight: goalWeight, $programDuration: programDuration, $currentWeight: currentWeight)
-    	then
-    	    System.out.println("FOURTH LAYER RULE: CALCULATE DAYSWEEK AND RESTTIME");
-            double calculatedDuration = (($currentWeight - $goalWeight)/$programDuration)*10;
-            $currentFact.setDaysWeek((int)calculatedDuration);
-            $currentFact.setRestTime(30);
-            update($currentFact);
-	end
+		$currentFact: CurrentFact(layer == 5, $exerciseList: exerciseList)
+		$inputData: InputDataTraining(training.size() != 0, training.get(training.size()-1).getSessionList().size() < 4,
+										$muscles: training.get(training.size()-1).getMuscles())
 
+		$muscle: Muscle() from $muscles
+		accumulate(Exercise($e: this,
+								!muscleList.contains($muscle)
+                                    ) from $exerciseList,
+                           $filteredExercises: collectList($e)
+                )
+	then
+		System.out.println($muscle);
+		System.out.println($filteredExercises);
+		Session session = new Session();
+        session.setExercise((Exercise) $filteredExercises.get(0));
+        $inputData.getTraining().get($inputData.getTraining().size()-1).addSession(session);
+        update($inputData);
+	end
+*/

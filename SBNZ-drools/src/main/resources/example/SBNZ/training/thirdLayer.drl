@@ -11,36 +11,49 @@ import com.example.SBNZ.enums.training.Difficulty;
 import com.example.SBNZ.enums.training.ExerciseCategory;
 import com.example.SBNZ.enums.training.Muscle;
 
-import java.util.List;
-
-function boolean containsAtLeastOneElement(Exercise exercise, InputDataTraining inputData){
-  for (Muscle muscle : inputData.getInjuries()) {
-    if (exercise.getMuscleList().contains(muscle)) {
-        return false;
-    }
-  }
-  return true;
-}
-
-// fact will go through this rule no matter the input
-rule "When rules are filtered by all the parameters, then filter by muscles"
+rule "When rules are filtered by all the parameters and goal is mass gain, then generate daysweek and resttime"
 	no-loop
 	when
-        $currentFact: CurrentFact($exerciseList: exerciseList, exerciseList.size() > 0, restTime == -1)
-        $inputData: InputDataTraining($injuries: injuries)
-        // $muscle: Muscle() from $injuries
-        accumulate(
-                           Exercise($e: this,
-                                    containsAtLeastOneElement($e, $inputData)
-                                    // !muscleList.contains($muscle)
-                                    ) from $exerciseList,
-                           $filteredExercises: collectList($e)
-                )
+        $currentFact: CurrentFact(goal == Goal.MASS_GAIN, $exerciseList: exerciseList, daysWeek == 0)
+        $inputData: InputDataTraining($goalWeight: goalWeight, $programDuration: programDuration, $currentWeight: currentWeight)
 	then
-	    System.out.println("THIRD LAYER RULE: FILTER EXERCISES BY INJURIES");
-	    System.out.println($filteredExercises);
-        $currentFact.setExerciseList($filteredExercises);
-        $currentFact.setDaysWeek(0);
-        $currentFact.setRestTime(0);
+	    System.out.println("THIRD LAYER RULE: CALCULATE DAYSWEEK AND RESTTIME");
+        double calculatedDuration = (($goalWeight - $currentWeight)/$programDuration)*10;
+        $currentFact.setDaysWeek((int)calculatedDuration);
+        $currentFact.setRestTime(60);
         update($currentFact);
 	end
+
+rule "When daysweek is < 3, then set it to 3"
+	no-loop
+	when
+        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek != 0, daysWeek < 3, daysWeek != -1)
+	then
+	    System.out.println("THIRD LAYER RULE: DAYSWEEK IS LESS THAN 3");
+        $currentFact.setDaysWeek(3);
+        update($currentFact);
+	end
+
+rule "When daysweek is > 5, then set it to 5"
+	no-loop
+	when
+        $currentFact: CurrentFact($exerciseList: exerciseList, daysWeek != 0, daysWeek > 5, daysWeek != -1)
+	then
+	    System.out.println("THIRD LAYER RULE: DAYSWEEK IS GREATER THAN 5");
+        $currentFact.setDaysWeek(5);
+        update($currentFact);
+	end
+
+rule "When rules are filtered by all the parameters and goal is weight loss, then generate daysweek and resttime"
+	no-loop
+	when
+            $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS, $exerciseList: exerciseList, daysWeek == 0)
+            $inputData: InputDataTraining($goalWeight: goalWeight, $programDuration: programDuration, $currentWeight: currentWeight)
+    	then
+    	    System.out.println("THIRD LAYER RULE: CALCULATE DAYSWEEK AND RESTTIME");
+            double calculatedDuration = (($currentWeight - $goalWeight)/$programDuration)*10;
+            $currentFact.setDaysWeek((int)calculatedDuration);
+            $currentFact.setRestTime(30);
+            update($currentFact);
+	end
+
