@@ -27,11 +27,14 @@ public class TrainingService {
     }
 
     public List<Training> getTraining(InputDataTraining input) {
-        input.setExerciseList(exerciseService.findAll());
+        List<Exercise> exercises = exerciseService.findAll();
         KieSession kieSession = kieContainer.newKieSession("trainingSession");
-        CurrentFact currentFact = new CurrentFact(2);
+        // CurrentFact currentFact = new CurrentFact(2);
         kieSession.insert(input);
-        kieSession.insert(currentFact);
+        for (Exercise exercise : exercises) {
+            kieSession.insert(exercise);
+        }
+        // kieSession.insert(currentFact);
         kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
         kieSession.dispose();

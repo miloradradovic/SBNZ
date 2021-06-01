@@ -11,246 +11,308 @@ import com.example.SBNZ.enums.training.Difficulty;
 import com.example.SBNZ.enums.training.ExerciseCategory;
 import com.example.SBNZ.enums.training.Muscle;
 
-rule "When goal is Mass gain, difficulty is high and using equipment is true-> get adequate exercises"
+rule "When goal is Mass gain, difficulty and using equipment are given-> get adequate exercises"
 	no-loop
 	when
-	    $currentFact: CurrentFact(layer == 2)
-        $training: Training(goal == Goal.MASS_GAIN)
-        $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
-                                      equipment == true,
-                                      $currentWeight: currentWeight,
-                                      $exercises: exerciseList)
+	    $exercises: List(size > 0) from collect(Exercise())
+	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN)
+        $inputData: InputDataTraining($difficulty: difficulty,
+                                      $equipment: equipment,
+                                      $injuries: injuries)
 
         accumulate(
                    Exercise($e: this,
-                            difficulty == Difficulty.HIGH,
-                            equipment == true,
+                            $muscleList: muscleList,
+                            difficulty == $difficulty,
+                            equipment == $equipment,
                             exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL
-                            ) from $exercises,
+                            ) from $exercises and
+                            Number(intValue == 0) from accumulate(
+                                Muscle($m: this, $muscleList.contains(this)// this memberOf $muscleList
+                                ) from $injuries,
+                                count(1)
+                            ),
                    $filteredExercises: collectList($e)
         )
 	then
+	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ INJURIES AND GOAL(MASS GAIN)");
         $currentFact.setExerciseList($filteredExercises);
-        $currentFact.setLayer(3);
+        $currentFact.setDaysWeek(0);
+        $currentFact.setRestTime(0);
         update($currentFact);
 	end
 
+rule "When goal is Weight loss, difficulty and using equipment are given-> get adequate exercises"
+	no-loop
+	when
+	    $exercises: List(size > 0) from collect(Exercise())
+	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+        $inputData: InputDataTraining($difficulty: difficulty,
+                                      $equipment: equipment,
+                                      $injuries: injuries)
+
+        accumulate(
+                   Exercise($e: this,
+                            $muscleList: muscleList,
+                            difficulty == $difficulty,
+                            equipment == $equipment,
+                            exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL
+                            ) from $exercises and
+                            Number(intValue == 0) from accumulate(
+                                Muscle($m: this, $muscleList.contains(this)// this memberOf $muscleList
+                                ) from $injuries,
+                                count(1)
+                            ),
+                   $filteredExercises: collectList($e)
+        )
+	then
+	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ INJURIES AND GOAL(WEIGHT LOSS)");
+        $currentFact.setExerciseList($filteredExercises);
+        $currentFact.setDaysWeek(0);
+        $currentFact.setRestTime(0);
+        update($currentFact);
+	end
+/*
 rule "When goal is Mass gain, difficulty is medium and using equipment is true-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+        	    $exercises: List(size > 0) from collect(Exercise())
+        	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN)
+                $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                              equipment == true)
 
-            $training: Training(goal == Goal.MASS_GAIN)
-            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
-                                          equipment == true,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == true, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-        $currentFact.setExerciseList($filteredExercises);
-        $currentFact.setLayer(3);
-        update($currentFact);
+                accumulate(
+                           Exercise($e: this,
+                                    difficulty == Difficulty.MEDIUM,
+                                    equipment == true,
+                                    exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL
+                                    ) from $exercises,
+                           $filteredExercises: collectList($e)
+                )
+        	then
+        	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                $currentFact.setExerciseList($filteredExercises);
+                update($currentFact);
+
     end
 
 rule "When goal is Mass gain, difficulty is low and using equipment is true-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN)
+                        $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                                      equipment == true)
 
-            $training: Training(goal == Goal.MASS_GAIN)
-            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
-                                          equipment == true,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == true, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.LOW,
+                                            equipment == true,
+                                            exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Mass gain, difficulty is high and using equipment is false-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN)
+                        $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                                      equipment == false)
 
-            $training: Training(goal == Goal.MASS_GAIN)
-            $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
-                                          equipment == false,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.HIGH, equipment == false, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.HIGH,
+                                            equipment == false,
+                                            exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Mass gain, difficulty is medium and using equipment is false-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN)
+                        $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                                      equipment == false)
 
-            $training: Training(goal == Goal.MASS_GAIN)
-            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
-                                          equipment == false,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == false, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.MEDIUM,
+                                            equipment == false,
+                                            exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Mass gain, difficulty is low and using equipment is false-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.MASS_GAIN)
+                        $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                                      equipment == false)
 
-            $training: Training(goal == Goal.MASS_GAIN)
-            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
-                                          equipment == false,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == false, exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.LOW,
+                                            equipment == false,
+                                            exerciseCategory == ExerciseCategory.MASS_GAIN || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is high and using equipment is true-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+                        $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                                      equipment == true)
 
-            $training: Training(goal == Goal.WEIGHT_LOSS)
-            $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
-                                          equipment == true,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.HIGH, equipment == true, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.HIGH,
+                                            equipment == true,
+                                            exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is medium and using equipment is true-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+                        $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                                      equipment == true)
 
-            $training: Training(goal == Goal.WEIGHT_LOSS)
-            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
-                                          equipment == true,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == true, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.MEDIUM,
+                                            equipment == true,
+                                            exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is low and using equipment is true-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+                        $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                                      equipment == true)
 
-            $training: Training(goal == Goal.WEIGHT_LOSS)
-            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
-                                          equipment == true,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == true, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.LOW,
+                                            equipment == true,
+                                            exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is high and using equipment is false-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+                        $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
+                                                      equipment == false)
 
-            $training: Training(goal == Goal.WEIGHT_LOSS)
-            $inputData: InputDataTraining(difficulty == Difficulty.HIGH,
-                                          equipment == false,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.HIGH, equipment == false, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.HIGH,
+                                            equipment == false,
+                                            exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is medium and using equipment is false-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+                        $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
+                                                      equipment == false)
 
-            $training: Training(goal == Goal.WEIGHT_LOSS)
-            $inputData: InputDataTraining(difficulty == Difficulty.MEDIUM,
-                                          equipment == false,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.MEDIUM, equipment == false, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.MEDIUM,
+                                            equipment == false,
+                                            exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
 
 rule "When goal is Weight loss, difficulty is low and using equipment is false-> get adequate exercises"
 	no-loop
     	when
-    		    $currentFact: CurrentFact(layer == 2)
+                	    $exercises: List(size > 0) from collect(Exercise())
+                	    $currentFact: CurrentFact(goal == Goal.WEIGHT_LOSS)
+                        $inputData: InputDataTraining(difficulty == Difficulty.LOW,
+                                                      equipment == false)
 
-            $training: Training(goal == Goal.WEIGHT_LOSS)
-            $inputData: InputDataTraining(difficulty == Difficulty.LOW,
-                                          equipment == false,
-                                          $currentWeight: currentWeight,
-                                          $exercises: exerciseList)
-            accumulate(
-                       Exercise($e: this, difficulty == Difficulty.LOW, equipment == false, exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL) from $exercises,
-                       $filteredExercises: collectList($e)
-            )
-    	then
-            $currentFact.setExerciseList($filteredExercises);
-                    $currentFact.setLayer(3);
-                    update($currentFact);
+                        accumulate(
+                                   Exercise($e: this,
+                                            difficulty == Difficulty.LOW,
+                                            equipment == false,
+                                            exerciseCategory == ExerciseCategory.WEIGHT_LOSS || exerciseCategory == ExerciseCategory.ALL
+                                            ) from $exercises,
+                                   $filteredExercises: collectList($e)
+                        )
+                	then
+                	    System.out.println("SECOND LAYER RULE: FILTER EXERCISES BY DIF EQ AND GOAL");
+                        $currentFact.setExerciseList($filteredExercises);
+                        update($currentFact);
     	end
+*/

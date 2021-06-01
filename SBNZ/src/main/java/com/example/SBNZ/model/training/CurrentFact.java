@@ -1,5 +1,6 @@
 package com.example.SBNZ.model.training;
 
+import com.example.SBNZ.enums.diet.Goal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,21 +11,21 @@ import java.util.List;
 
 public class CurrentFact {
 
-    private int layer;
+    private Goal goal;
     private List<Exercise> exerciseList = new ArrayList<>();
-    private int daysWeek;
-    private int restTime;
+    private int daysWeek = -1;
+    private int restTime = -1;
 
     public CurrentFact() {
 
     }
 
-    public CurrentFact(List<Exercise> exerciseList) {
-        this.exerciseList = exerciseList;
+    public CurrentFact(Goal goal) {
+        this.goal = goal;
     }
 
-    public CurrentFact(int layer) {
-        this.layer = layer;
+    public CurrentFact(List<Exercise> exerciseList) {
+        this.exerciseList = exerciseList;
     }
 
     public int getDaysWeek() {
@@ -35,12 +36,12 @@ public class CurrentFact {
         this.daysWeek = daysWeek;
     }
 
-    public int getLayer() {
-        return layer;
+    public Goal getGoal() {
+        return goal;
     }
 
-    public void setLayer(int layer) {
-        this.layer = layer;
+    public void setGoal(Goal goal) {
+        this.goal = goal;
     }
 
     public List<Exercise> getExerciseList() {
