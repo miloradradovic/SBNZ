@@ -23,7 +23,7 @@ public class TrainingController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<List<Training>> getTraining(@RequestBody InputDataTraining input) {
 
-    	List<Training> result = trainingService.getTraining(input);
+    	List<Training> result = trainingService.getTraining(input, "username");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

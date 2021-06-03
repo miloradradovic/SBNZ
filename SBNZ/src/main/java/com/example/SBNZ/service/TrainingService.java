@@ -19,38 +19,28 @@ import java.util.List;
 @Service
 public class TrainingService {
 
-    private final KieContainer kieContainer;
-    private KieSession kieSession;
+    @Autowired
+    private KieService kieService;
 
     @Autowired
     private ExerciseService exerciseService;
 
-    @Autowired
-    public TrainingService(KieContainer kieContainer) {
-        this.kieContainer = kieContainer;
-    }
-
-    public List<Training> getTraining(InputDataTraining input) {
+    public List<Training> getTraining(InputDataTraining input, String username) {
         List<Exercise> exercises = exerciseService.findAll();
-        if (kieSession == null) {
-            kieSession = kieContainer.newKieSession("trainingSession");
-        }
+        KieSession kieSession = kieService.getKieSession(username);
         kieSession.insert(input);
         for (Exercise exercise : exercises) {
             kieSession.insert(exercise);
         }
         kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
-        Collection<FactHandle> handlers = kieSession.getFactHandles();
-        for (FactHandle handle: handlers) {
-            kieSession.delete(handle);
-        }
-        // kieSession.dispose(); dispose radi samo kad se korisnik izloguje
+        kieService.clearWorkingMemory(username);
         return input.getTraining();
     }
 
+
     public void doCEP(List<CEPInput> input) {
-        KieSession kieSession = kieContainer.newKieSession("cepKsession");
+        KieSession kieSession = kieService.generateCEPSession();
         for (CEPInput cep : input) {
             kieSession.insert(cep);
             kieSession.fireAllRules();

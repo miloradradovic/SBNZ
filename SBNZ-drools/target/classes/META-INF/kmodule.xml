@@ -7,11 +7,14 @@
 	<!--<kbase name="rules" packages="rules">
 		<ksession name="rulesSession"/>
 	</kbase>>-->
-	<kbase name="trainingKbase" packages="example.SBNZ.training">
+	<!--<kbase name="trainingKbase" packages="example.SBNZ.training">
 		<ksession name="trainingSession"/>
+	</kbase>-->
+	<kbase name="rulesBase" packages="example.SBNZ">
+		<ksession name="rulesSession"/>
 	</kbase>
-	<kbase name="dietKbase" packages="example.SBNZ.diet">
-		<ksession name="dietSession"/>
+	<kbase name="queryBase" packages="example.SBNZ.query">
+		<ksession name="querySession"/>
 	</kbase>
 	<kbase name="cepKbase" eventProcessingMode="stream" packages="cep">
 		<ksession name="cepKsession"/>
