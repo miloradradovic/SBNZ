@@ -43,6 +43,10 @@ public class KieService {
     public KieSession generateCEPSession() {
         return kieContainer.newKieSession("cepKsession");
     }
+    
+    public KieSession generateQuerySession() {
+        return kieContainer.newKieSession("querySession");
+    }
 
     public void removeKieSession(String username) {
         sessions.remove(username);

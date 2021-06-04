@@ -19,29 +19,26 @@ import com.example.SBNZ.repository.MealRepository;
 @Service
 public class DietService {
 
-    private final KieContainer kieContainer;
+    
+    @Autowired
+    private KieService kieService;
 
     @Autowired
     private MealRepository mealRepository;
     
-    @Autowired
-    public DietService(KieContainer kieContainer) {
-        this.kieContainer = kieContainer;
-    }
 
     public Diet getDiet(InputDataDiet inputData) {
-    	
-        KieSession kieSession = kieContainer.newKieSession("dietSession");
+        KieSession kieSession = kieService.getKieSession("a");
         inputData.setMeals(mealRepository.findAll());
         kieSession.insert(inputData);
         kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
-        kieSession.dispose();
+        kieService.clearWorkingMemory("a");
         return inputData.getDiet();
     }
     
     public List<Meal> getMeals(SearchDiet input){
-    	KieSession kieSession = kieContainer.newKieSession("dietSession");
+    	KieSession kieSession = kieService.generateQuerySession();
     	InputDataDiet mockInput = new InputDataDiet();
     	mockInput.setMeals(mealRepository.findAll());
         kieSession.insert(mockInput);
