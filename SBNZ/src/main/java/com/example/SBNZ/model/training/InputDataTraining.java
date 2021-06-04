@@ -22,6 +22,10 @@ public class InputDataTraining extends InputData {
 		this.equipment = equipment;
 	}
 
+	public InputDataTraining() {
+		super();
+	}
+
 	public Difficulty getDifficulty() {
 		return difficulty;
 	}

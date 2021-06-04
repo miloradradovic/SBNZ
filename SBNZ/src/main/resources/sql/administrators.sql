@@ -1,0 +1,2 @@
+insert into administrators (id, first_name, last_name, username, password, verified) values (nextval('person_seq'), 'Milorad', 'Radovic', 'micoadmin', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK', true);
+insert into administrators (id, first_name, last_name, username, password, verified) values (nextval('person_seq'), 'Vukasin', 'Ocokoljic', 'vukiadmin', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK', true);

@@ -1,0 +1,2 @@
+insert into users (id, first_name, last_name, username, password, verified) values (nextval('person_seq'), 'Milorad', 'Radovic', 'micouser', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK', true);
+insert into users (id, first_name, last_name, username, password, verified) values (nextval('person_seq'), 'Vukasin', 'Ocokoljic', 'vukiuser', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK', true);

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ public class DietController {
     DietService dietService;
 
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Diet> getDiet(@RequestBody InputDataDiet input) {
     	System.out.println(input);
         Diet result = dietService.getDiet(input);
@@ -31,6 +33,7 @@ public class DietController {
     }
     
     @RequestMapping(method = RequestMethod.POST, value="/searchMeals")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<Meal>> searchMeals(@RequestBody SearchDiet input) {
     	System.out.println(input);
         List<Meal> meals = dietService.getMeals(input);
