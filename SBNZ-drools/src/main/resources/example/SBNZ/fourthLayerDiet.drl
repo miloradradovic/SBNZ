@@ -13,19 +13,24 @@ import java.util.ArrayList;
 rule "When junk food frequency is OFTEN remove foods which are more than 10 percent junk food and filter health Issues"
 	no-loop
     	when
-            $diet: Diet(kCal > 0)
-            $inputData: InputDataDiet($healthIssues: healthIssues,
-                                          junkFoodFrequency == JunkFoodFrequency.OFTEN,
-                                          $meals: meals)
-            $healthIssue: HealthIssue() from $healthIssues
+    	    $meals: List(size > 0) from collect(Meal())
+            $diet: Diet(kCal > 0, calorieMin != 0)
+            $inputData: InputDataDiet(diet != null, $healthIssues: healthIssues,
+                                          junkFoodFrequency == JunkFoodFrequency.OFTEN)
         	accumulate(
                            Meal($m: this,
-                                    !healthIssueTypes.contains($healthIssue),
+                                    $healthIssueTypes: healthIssueTypes,
                                     junkPercentage <= 10
-                                    ) from $meals,
+                                    ) from $meals and
+                                    Number(intValue == 0) from accumulate(
+                                        HealthIssue($hi: this, $healthIssueTypes.contains(this)
+                                        ) from $healthIssues,
+                                        count(1)
+                                    ),
                            $filteredMeals: collectList($m)
                 )
     	then
+    	System.out.println("[DIET] Fourth layer - junk freq is often, filter meals by health issues");
         $inputData.getDiet().setMeals($filteredMeals);
         update($inputData);
     end
@@ -33,19 +38,24 @@ rule "When junk food frequency is OFTEN remove foods which are more than 10 perc
 rule "When junk food frequency is SOMETIMES remove foods which are more than 20 percent junk food and filter health Issues"
 	no-loop
     	when
-            $diet: Diet(kCal > 0)
-            $inputData: InputDataDiet($healthIssues: healthIssues,
-                                          junkFoodFrequency == JunkFoodFrequency.SOMETIMES,
-                                          $meals: meals)
-            $healthIssue: HealthIssue() from $healthIssues
+    	    $meals: List(size > 0) from collect(Meal())
+            $diet: Diet(kCal > 0, calorieMin != 0)
+            $inputData: InputDataDiet(diet != null, $healthIssues: healthIssues,
+                                          junkFoodFrequency == JunkFoodFrequency.SOMETIMES)
         	accumulate(
                            Meal($m: this,
-                                    !healthIssueTypes.contains($healthIssue),
+                                $healthIssueTypes: healthIssueTypes,
                                     junkPercentage <= 20
-                                    ) from $meals,
+                                    ) from $meals and
+                                    Number(intValue == 0) from accumulate(
+                                        HealthIssue($hi: this, $healthIssueTypes.contains(this)
+                                        ) from $healthIssues,
+                                        count(1)
+                                    ),
                            $filteredMeals: collectList($m)
                 )
     	then
+    	System.out.println("[DIET] Fourth layer - junk freq is sometimes, filter meals by health issues");
         $inputData.getDiet().setMeals($filteredMeals);
         update($inputData);
     end
@@ -53,19 +63,25 @@ rule "When junk food frequency is SOMETIMES remove foods which are more than 20 
 rule "When junk food frequency is RARELY remove foods which are more than 30 percent junk food and filter health Issues"
 	no-loop
     	when
-            $diet: Diet(kCal > 0)
+    	    $meals: List(size > 0) from collect(Meal())
+            $diet: Diet(kCal > 0, calorieMin != 0)
             $inputData: InputDataDiet($healthIssues: healthIssues,
                                           junkFoodFrequency == JunkFoodFrequency.RARELY,
-                                          $meals: meals)
-            $healthIssue: HealthIssue() from $healthIssues
+                                          diet != null)
         	accumulate(
                            Meal($m: this,
-                                    !healthIssueTypes.contains($healthIssue),
+                                    $healthIssueTypes: healthIssueTypes,
                                     junkPercentage <= 30
-                                    ) from $meals,
+                                    ) from $meals and
+                                    Number(intValue == 0) from accumulate(
+                                        HealthIssue($hi: this, $healthIssueTypes.contains(this)
+                                        ) from $healthIssues,
+                                        count(1)
+                                    ),
                            $filteredMeals: collectList($m)
                 )
     	then
+    	System.out.println("[DIET] Fourth layer - junk freq is rarely, filter meals by health issues");
         $inputData.getDiet().setMeals($filteredMeals);
         update($inputData);
     end
@@ -73,19 +89,24 @@ rule "When junk food frequency is RARELY remove foods which are more than 30 per
 rule "When junk food frequency is NEVER dont remove any foods"
 	no-loop
     	when
-            $diet: Diet(kCal > 0)
+    	    $meals: List(size > 0) from collect(Meal())
+            $diet: Diet(kCal > 0, calorieMin != 0)
             $inputData: InputDataDiet($healthIssues: healthIssues,
                                           junkFoodFrequency == JunkFoodFrequency.NEVER,
-                                          $meals: meals)
-            $healthIssue: HealthIssue() from $healthIssues
+                                          diet != null)
         	accumulate(
                            Meal($m: this,
-                                    !healthIssueTypes.contains($healthIssue)
-                                    ) from $meals,
+                                    $healthIssueTypes: healthIssueTypes
+                                    ) from $meals and
+                                    Number(intValue == 0) from accumulate(
+                                        HealthIssue($hi: this, $healthIssueTypes.contains(this)
+                                        ) from $healthIssues,
+                                        count(1)
+                                    ),
                            $filteredMeals: collectList($m)
                 )
     	then
-    	System.out.println($diet.getkCal());
+    	System.out.println("[DIET] Fourth layer - junk freq is never, filter meals by health issues");
         $inputData.getDiet().setMeals($filteredMeals);
         update($inputData);
     end
@@ -94,7 +115,9 @@ rule "When kCal are set filter dinner type Meals."
 	no-loop
     	when
             $diet: Diet($goal: goal, kCal > 0, $kcalDinner: ((kCal/3) - (0.1*(kCal/3))), $kcalLunch: ((kCal/3) + (0.3*(kCal/3))),$kcalBreakfast: ((kCal/3) - (0.2*(kCal/3))) )
-            $inputData: InputDataDiet($meals: meals)
+            $inputData: InputDataDiet(diet != null, diet.getMeals() != null,
+                                      diet.getMeals().size() != 0,
+                                      $meals: diet.getMeals())
         	accumulate(
                            Meal($m: this,
                            			mealType == MealType.DINNER,
@@ -127,6 +150,7 @@ rule "When kCal are set filter dinner type Meals."
                            $filteredSnacks: collectList($m)
                 )
     	then
+    	System.out.println("[DIET] Fourth layer - when kcal is set filter by type");
     	ArrayList<Meal> list = new ArrayList<Meal>();
     	list.addAll($filteredDinners);
     	list.addAll($filteredLunch);
@@ -134,5 +158,6 @@ rule "When kCal are set filter dinner type Meals."
     	list.addAll($filteredSnacks);
         $inputData.getDiet().setMeals(list);
         update($inputData);
+        drools.halt();
     end
    

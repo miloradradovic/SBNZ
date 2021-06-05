@@ -12,6 +12,7 @@ rule "When goal is to lose weight set minimum, maximum calorie deficit and recom
 	    							$recommendedDeficit: ((currentWeight - goalWeight)*40), //recommended cal deficit
 									$recommendedCalories: (currentWeight*40 - (currentWeight - goalWeight)*40))
 	then
+		System.out.println("[DIET] Second layer - goal is weight loss, setting calorie min max and recom time");
 		$diet.setCalorieMax((int)$recommendedCalories);
 		$diet.setCalorieMin((int)($recommendedCalories - $recommendedDeficit));		
 		$diet.setRecommendedTime((int)$recommendedTime);
@@ -28,6 +29,7 @@ rule "When recommended time is bigger then desired program duration recommend lo
 	    							$calorieMax: calorieMax,
 	    							$calorieMin: calorieMin)
 	then
+	    System.out.println("[DIET] Second layer - goal is weight loss, recom time is bigger than program duration - lower daily kcal value");
 		$diet.setkCal((int) ($calorieMax - ($calorieMax - $calorieMin)*(1.0 - ($programDuration/$recommendedTime)) + $dailyCalBurn));
 		update($diet);
 	end
@@ -41,6 +43,7 @@ rule "When recommended time is less then desired program duration recommend maxi
 		$diet: Diet(goal == Goal.WEIGHT_LOSS, recommendedTime <= $programDuration,
 	    							$calorieMax: calorieMax)
 	then
+	    System.out.println("[DIET] Second layer - goal is weight loss, recom time is less than program duration - higher daily kcal value");
 		$diet.setkCal((int) $calorieMax + $dailyCalBurn);
 		update($diet);
 	end
@@ -56,6 +59,7 @@ rule "When goal is to gain mass set minimum, maximum calorie deficit and recomme
 	    							$recommendedDeficit: ((goalWeight - currentWeight)*40), //recommended cal deficit
 									$recommendedCalories: (currentWeight*40 - (goalWeight - currentWeight)*40))
 	then
+	    System.out.println("[DIET] Second layer - goal is mass gain, setting calorie min max and recom time");
 		$diet.setCalorieMax((int)$recommendedCalories);
 		$diet.setCalorieMin((int)($recommendedCalories - $recommendedDeficit));		
 		$diet.setRecommendedTime((int)$recommendedTime);
@@ -73,6 +77,7 @@ rule "When goal is to gain mass and recommended time is bigger then desired prog
 	    							$calorieMax: calorieMax,
 	    							$calorieMin: calorieMin)
 	then
+	    System.out.println("[DIET] Second layer - goal is mass gain, recom time is bigger than program duration, lower daily kcal value");
 		$diet.setkCal((int) ($calorieMax - ($calorieMax - $calorieMin)*($programDuration/$recommendedTime) + $dailyCalBurn));
 		update($diet);
 	end
@@ -86,6 +91,7 @@ rule "When goal is to gain mass and recommended time is less then desired progra
 		$diet: Diet(goal == Goal.MASS_GAIN, recommendedTime <= $programDuration,
 	    							$calorieMin: calorieMin)
 	then
+		System.out.println("[DIET] Second layer - goal is mass gain, recom time is less than program duration, higher daily kcal value");
 		$diet.setkCal((int) $calorieMin + $dailyCalBurn);
 		update($diet);
 	end

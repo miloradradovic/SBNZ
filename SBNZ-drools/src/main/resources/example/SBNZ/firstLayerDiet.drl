@@ -11,6 +11,7 @@ rule "When Current Weight is less then Goal Weight set goal to Weight Loss"
 	when
 		$inputData: InputDataDiet(currentWeight > goalWeight)
 	then
+	    System.out.println("[DIET] First layer - setting the goal to weight loss");
 		insert(new Diet(Goal.WEIGHT_LOSS));
 	end
 	
@@ -20,5 +21,6 @@ rule "When Current Weight is equal or above Goal Weight set goal to Mass Gain"
 	when
 		$inputData: InputDataDiet(currentWeight <= goalWeight)
 	then
+		System.out.println("[DIET] First layer - setting the goal to mass gain");
 		insert(new Diet(Goal.MASS_GAIN));
 	end

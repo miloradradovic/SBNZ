@@ -3,6 +3,8 @@ package rules;
 import com.example.SBNZ.model.diet.InputDataDiet;
 import com.example.SBNZ.model.diet.Diet;
 import com.example.SBNZ.enums.diet.Goal;
+import com.example.SBNZ.enums.diet.MealType;
+import com.example.SBNZ.model.diet.Meal;
 
 query "Recommend meals" (MealType $mealType, int $kCalFrom, int $kCalTo, int $proteinsFrom, 
 						int $proteinsTo, int $fatsFrom, int $fatsTo, int $carbsFrom, int $carbsTo)
