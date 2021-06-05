@@ -1,9 +1,12 @@
 package com.example.SBNZ.service;
 
+import com.example.SBNZ.model.Person;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -49,6 +52,7 @@ public class KieService {
     }
 
     public void removeKieSession(String username) {
+        sessions.get(username).dispose();
         sessions.remove(username);
     }
 }
