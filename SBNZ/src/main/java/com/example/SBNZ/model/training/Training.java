@@ -1,18 +1,37 @@
 package com.example.SBNZ.model.training;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import com.example.SBNZ.enums.diet.Goal;
 import com.example.SBNZ.enums.training.Muscle;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "trainings")
 public class Training {
 
-    private List<Session> sessionList = new ArrayList<Session>();
-    private int restTime;
-    private int numberOfSessions;
-    private Goal goal;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "trainingId")
+    private List<Session> sessionList = new ArrayList<>();
+
+	@Column(name = "restTime", nullable = false)
+	private int restTime;
+
+	@Column(name = "numberOfSessions", nullable = false)
+	private int numberOfSessions;
+
+	@Enumerated(EnumType.STRING)
+	private Goal goal;
+
+	@ElementCollection(targetClass = Muscle.class)
+	@JoinTable(name = "muscles_training", joinColumns = @JoinColumn(name = "training_id"))
+	@Column(name = "muscleList", nullable = false)
+	@Enumerated(EnumType.STRING)
     private List<Muscle> muscles = new ArrayList<Muscle>();
 
 	public Training() {
@@ -35,7 +54,24 @@ public class Training {
 		this.restTime = restTime;
 		this.numberOfSessions = numberOfSessions;
 	}
-	
+
+	public Training(List<Session> sessionList, int restTime, int numberOfSessions, Goal goal, List<Muscle> muscles) {
+		this.sessionList = sessionList;
+		this.restTime = restTime;
+		this.numberOfSessions = numberOfSessions;
+		this.goal = goal;
+		this.muscles = muscles;
+	}
+
+	public Training(int id, List<Session> sessionList, int restTime, int numberOfSessions, Goal goal, List<Muscle> muscles) {
+		this.id = id;
+		this.sessionList = sessionList;
+		this.restTime = restTime;
+		this.numberOfSessions = numberOfSessions;
+		this.goal = goal;
+		this.muscles = muscles;
+	}
+
 	public void addSession(List<Exercise> exercises) {
 		Random rand = new Random();
 		int randomIndex = -1;
@@ -61,6 +97,14 @@ public class Training {
 		}
 		 */
 
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Goal getGoal() {

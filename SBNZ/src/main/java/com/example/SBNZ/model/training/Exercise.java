@@ -9,19 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "exercises")
@@ -38,7 +30,7 @@ public class Exercise {
     private String description;
     
     @ElementCollection(targetClass = Muscle.class)
-    @JoinTable(name = "muscles", joinColumns = @JoinColumn(name = "exercise_id"))
+    @JoinTable(name = "muscles_exercise", joinColumns = @JoinColumn(name = "exercise_id"))
     @Column(name = "muscleList", nullable = false)
     @Enumerated(EnumType.STRING)
     private List<Muscle> muscleList;
@@ -52,6 +44,9 @@ public class Exercise {
     @Enumerated(EnumType.STRING)
     private ExerciseCategory exerciseCategory;
 
+    //@OneToMany(mappedBy = "exercise")
+    //private Set<Session> sessionSet = new HashSet<>();
+
     public Exercise() {
     }
 
@@ -64,7 +59,16 @@ public class Exercise {
         this.equipment = equipment;
         this.exerciseCategory = exerciseCategory;
     }
-    
+
+    public Exercise(String name, String description, List<Muscle> muscleList, Difficulty difficulty, boolean equipment, ExerciseCategory exerciseCategory) {
+        this.name = name;
+        this.description = description;
+        this.muscleList = muscleList;
+        this.difficulty = difficulty;
+        this.equipment = equipment;
+        this.exerciseCategory = exerciseCategory;
+    }
+
     public boolean containsAny(List<Exercise> elements) {
     	for(Exercise ex: elements) {
     		if(this.muscleList.contains(ex)) {
