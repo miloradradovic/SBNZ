@@ -1,14 +1,19 @@
 package com.example.SBNZ.api;
 
+import com.example.SBNZ.dto.PersonToRegisterDTO;
 import com.example.SBNZ.dto.UserLoginDTO;
 import com.example.SBNZ.dto.UserTokenStateDTO;
+import com.example.SBNZ.model.Admin;
+import com.example.SBNZ.model.Authority;
 import com.example.SBNZ.model.Person;
+import com.example.SBNZ.model.User;
 import com.example.SBNZ.security.TokenUtils;
-import com.example.SBNZ.service.AuthorityService;
-import com.example.SBNZ.service.CustomUserDetailsService;
+import com.example.SBNZ.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -41,6 +48,15 @@ public class AuthenticationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private KieService kieService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AdminService adminService;
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -63,6 +79,18 @@ public class AuthenticationController {
         return ResponseEntity.ok(new UserTokenStateDTO(jwt));
     }
 
+    @PostMapping("/log-out")
+    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMINISTRATOR')")
+    public ResponseEntity<String> logout() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Person person = (Person) authentication.getPrincipal();
+        String username = person.getUsername();
+        kieService.removeKieSession(username);
+        // Vrati token kao odgovor na uspesnu autentifikaciju
+        return ResponseEntity.ok("Successfully logged out.");
+    }
+
     // U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
     @PostMapping(value = "/refresh")
     public ResponseEntity<UserTokenStateDTO> refreshAuthenticationToken(HttpServletRequest request) {
@@ -80,6 +108,31 @@ public class AuthenticationController {
             UserTokenStateDTO userTokenState = new UserTokenStateDTO();
             return ResponseEntity.badRequest().body(userTokenState);
         }
+    }
+
+    // Endpoint za registraciju novog korisnika
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody PersonToRegisterDTO userRequest) throws Exception {
+
+        User existUser = this.userService.findByUsername(userRequest.getUsername());
+        Admin existAdmin = this.adminService.findByUsername(userRequest.getUsername());
+        if (existUser != null || existAdmin != null) {
+            return new ResponseEntity<>("Username or email already exists.", HttpStatus.BAD_REQUEST);
+        }
+        existUser = new User(userRequest.getFirstName(), userRequest.getLastName(), userRequest.getUsername(),
+                passwordEncoder.encode(userRequest.getPassword()), true);
+
+        long role = 2;
+        List<Authority> auth = authorityService.findById(role);
+        existUser.setAuthorities(auth);
+
+        User newUser = userService.registerUser(existUser);
+
+        if(newUser == null){
+            return new ResponseEntity<>("Username already exists.", HttpStatus.BAD_REQUEST);
+        }
+        userRequest.setId(newUser.getId());
+        return new ResponseEntity<>(userRequest, HttpStatus.CREATED);
     }
 
 }

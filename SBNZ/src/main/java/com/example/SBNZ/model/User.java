@@ -2,6 +2,8 @@ package com.example.SBNZ.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.List;
 
 
 @Entity
@@ -28,6 +30,9 @@ public class User extends Person{
     public boolean isEnabled() {
         return super.isVerified();
     }
-    
+
+    public User(String firstName, String lastName, String username, String password, boolean verified) {
+        super(firstName, lastName, username, password, verified);
+    }
     
 }

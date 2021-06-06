@@ -13,6 +13,7 @@ rule "When goal is weight loss and recommended number of kCal is above 2000 reco
 		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
 		$diet: Diet(goal == Goal.WEIGHT_LOSS, kCal > 2000, $kCal: kCal)
 	then
+		System.out.println("[DIET] Third layer - goal is weight loss, kcal is > 2000");
 		double nutrition_part = $kCal/30;
 		double lower_bound = nutrition_part*$fatPercentage;
 	
@@ -31,6 +32,7 @@ rule "When goal is weight loss and recommended number of kCal is below 2000 reco
 		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
 		$diet: Diet(goal == Goal.WEIGHT_LOSS, kCal <= 2000, $kCal: kCal)
 	then
+	    System.out.println("[DIET] Third layer - goal is weight loss, kcal is < 2000");
 		double nutrition_part = 200/3;
 		double lower_bound = nutrition_part*$fatPercentage;
 		
@@ -51,6 +53,7 @@ rule "When goal is mass gain and recommended number of kCal is above 2000 recomm
 		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
 		$diet: Diet(goal == Goal.MASS_GAIN, kCal > 2000, $kCal: kCal)
 	then
+	    System.out.println("[DIET] Third layer - goal is mass gain, kcal is > 2000");
 		double nutrition_part = $kCal/30;
 		double lower_bound = nutrition_part*$fatPercentage;
 	
@@ -67,8 +70,9 @@ rule "When goal is mass gain and recommended number of kCal is below 2000 recomm
 	no-loop
 	when
 		$inputData: InputDataDiet($fatPercentage: (((double)fatPercentage)/100))
-		$diet: Diet(goal == Goal.MASS_GAIN, kCal <= 2000, $kCal: kCal)
+		$diet: Diet(goal == Goal.MASS_GAIN, kCal <= 2000, $kCal: kCal, calorieMin != 0)
 	then
+	    System.out.println("[DIET] Third layer - goal is mass gain, kcal is < 2000");
 		double nutrition_part = 200/3;
 		double lower_bound = nutrition_part*$fatPercentage;
 		

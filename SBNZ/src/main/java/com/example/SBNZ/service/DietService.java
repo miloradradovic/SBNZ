@@ -1,12 +1,16 @@
 package com.example.SBNZ.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.SBNZ.model.Person;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.SBNZ.enums.diet.MealType;
@@ -28,12 +32,19 @@ public class DietService {
     
 
     public Diet getDiet(InputDataDiet inputData) {
-        KieSession kieSession = kieService.getKieSession("a");
-        inputData.setMeals(mealRepository.findAll());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Person person = (Person) authentication.getPrincipal();
+        String username = person.getUsername();
+        KieSession kieSession = kieService.getKieSession(username);
+        List<Meal> meals = mealRepository.findAll();
+        for (Meal meal: meals) {
+            kieSession.insert(meal);
+        }
+        // inputData.setMeals(new ArrayList<>());
         kieSession.insert(inputData);
         kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
-        kieService.clearWorkingMemory("a");
+        kieService.clearWorkingMemory(username);
         return inputData.getDiet();
     }
     

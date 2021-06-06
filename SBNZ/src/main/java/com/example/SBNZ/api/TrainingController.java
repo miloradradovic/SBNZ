@@ -1,5 +1,6 @@
 package com.example.SBNZ.api;
 
+import com.example.SBNZ.model.Person;
 import com.example.SBNZ.model.TestRuleModel;
 import com.example.SBNZ.model.training.InputDataTraining;
 import com.example.SBNZ.model.training.Training;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +28,7 @@ public class TrainingController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<Training>> getTraining(@RequestBody InputDataTraining input) {
 
-    	List<Training> result = trainingService.getTraining(input, "username");
+        List<Training> result = trainingService.getTraining(input);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

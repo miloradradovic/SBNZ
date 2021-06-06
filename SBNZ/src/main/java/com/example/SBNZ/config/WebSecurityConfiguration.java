@@ -68,9 +68,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 // svim korisnicima dopusti da pristupe putanji /auth/**
-                .authorizeRequests().antMatchers("/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/auth/log-in").permitAll()
                 //.antMatchers(HttpMethod.POST,"/cultural-offers").permitAll()
-
+                .antMatchers("/auth/activate").permitAll()
+                .antMatchers("/auth/register").permitAll()
                 // umesto anotacija iynad svake metode, moze i ovde da se proveravaju prava pristupa ya odredjeni URL
                 //.antMatchers(HttpMethod.GET, "/categories").hasRole("ADMINISTRATOR")
 
@@ -89,7 +90,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-        web.ignoring().antMatchers(HttpMethod.POST, "/auth/log-in", "/auth/activate");
+        web.ignoring().antMatchers(HttpMethod.POST, "/auth/log-in", "/auth/activate", "/auth/register");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");
     }

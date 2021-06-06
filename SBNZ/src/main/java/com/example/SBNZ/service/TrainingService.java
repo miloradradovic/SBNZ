@@ -1,5 +1,6 @@
 package com.example.SBNZ.service;
 
+import com.example.SBNZ.model.Person;
 import com.example.SBNZ.model.training.CurrentFact;
 import com.example.SBNZ.model.training.Exercise;
 import com.example.SBNZ.model.training.cep.CEPInput;
@@ -7,6 +8,8 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.SBNZ.model.training.InputDataTraining;
@@ -25,7 +28,10 @@ public class TrainingService {
     @Autowired
     private ExerciseService exerciseService;
 
-    public List<Training> getTraining(InputDataTraining input, String username) {
+    public List<Training> getTraining(InputDataTraining input) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Person person = (Person) authentication.getPrincipal();
+        String username = person.getUsername();
         List<Exercise> exercises = exerciseService.findAll();
         KieSession kieSession = kieService.getKieSession(username);
         kieSession.insert(input);

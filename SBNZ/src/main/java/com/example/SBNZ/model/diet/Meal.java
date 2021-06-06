@@ -1,5 +1,6 @@
 package com.example.SBNZ.model.diet;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +64,7 @@ public class Meal {
     @JoinTable(name = "healthIssueTypes", joinColumns = @JoinColumn(name = "meal_id"))
     @Column(name = "healthIssueTypes", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Set<HealthIssue> healthIssueTypes = new HashSet<HealthIssue>();
+    private List<HealthIssue> healthIssueTypes;
     
     
     @Column(name = "recipe", nullable = true)
@@ -150,12 +151,12 @@ public class Meal {
 	}
 
 
-	public Set<HealthIssue> getHealthIssueTypes() {
+	public List<HealthIssue> getHealthIssueTypes() {
 		return healthIssueTypes;
 	}
 
 
-	public void setHealthIssueTypes(Set<HealthIssue> healthIssueTypes) {
+	public void setHealthIssueTypes(List<HealthIssue> healthIssueTypes) {
 		this.healthIssueTypes = healthIssueTypes;
 	}
 
