@@ -70,6 +70,17 @@ public class Meal {
     @Column(name = "recipe", nullable = true)
     private String recipe;
 
+	public Meal(int kCal, int carbonHydrates, int proteins, int fats, String name, MealType mealType, int junkPercentage, List<HealthIssue> healthIssueTypes, String recipe) {
+		this.kCal = kCal;
+		this.carbonHydrates = carbonHydrates;
+		this.proteins = proteins;
+		this.fats = fats;
+		this.name = name;
+		this.mealType = mealType;
+		this.junkPercentage = junkPercentage;
+		this.healthIssueTypes = healthIssueTypes;
+		this.recipe = recipe;
+	}
 
 	public int getId() {
 		return id;
