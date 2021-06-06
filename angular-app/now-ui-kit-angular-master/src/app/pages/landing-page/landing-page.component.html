@@ -8,10 +8,17 @@
                 <img class="n-logo" src="assets/img/logo.png" alt="">
                 <h1 class="h1-seo">Everything you need.</h1>
                 <h3>Free exercises, diet plans and more upcoming!</h3>
-                <a href="/login" style="margin-left:30%; width: 40%;" class="btn btn-primary btn-round btn-lg btn-block">Sign in</a>
-                <h6 style="margin-top: 2%;">
-                    <a href="#pablo" class="link" >Create Account</a>
-                </h6>
+                <div *ngIf="!isUser()">
+                    <a href="/login" style="margin-left:30%; width: 40%;" class="btn btn-primary btn-round btn-lg btn-block">Sign in</a>
+                    <h6 style="margin-top: 2%;">
+                        <a href="/signup" class="link" >Create Account</a>
+                    </h6>
+                </div>
+                <div *ngIf="isUser()">
+                    <a style="margin-right:5%; width: 15%" class="btn btn-primary btn-round">My Trainigs</a>
+                    <a style="width: 15%" class="btn btn-primary btn-round">My Diets</a>
+                </div>
+
             </div>
         </div>
     </div>

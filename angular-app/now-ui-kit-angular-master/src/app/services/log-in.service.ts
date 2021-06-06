@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {StorageService} from '../services/storage.service';
-import {LogIn, UserRole} from '../model/login.model';
+import {LogIn, RegisterModel, UserRole} from '../model/login.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,14 @@ export class LogInService {
   }
 
   logOut(): void {
-    this.storageService.clearStorage();
+    this.http.post('http://localhost:8080/auth/log-out', {headers: this.headers}).toPromise().then( success => {
+        this.storageService.clearStorage();
+    });
+    
+  }
+
+  register(regModel: RegisterModel): Observable<any> {
+    return this.http.post('http://localhost:8080/auth/register', regModel, {headers: this.headers});
   }
 
   getRole(): UserRole {

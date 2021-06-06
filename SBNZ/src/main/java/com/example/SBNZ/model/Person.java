@@ -30,6 +30,9 @@ public abstract class Person implements UserDetails {
 
     @Column(name = "verified", unique = false, nullable = true)
     private boolean verified;
+    
+    @Column(name = "age", unique = false, nullable = true)
+    private int age;
 
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
@@ -108,7 +111,7 @@ public abstract class Person implements UserDetails {
 		this.authorities = authorities;
 	}
 
-	public Person(int id, String firstName, String lastName, String username, String password, boolean verified,
+	public Person(int id, String firstName, String lastName, String username, String password, boolean verified, int age,
 			Timestamp lastPasswordResetDate, List<Authority> authorities) {
 		super();
 		this.id = id;
@@ -117,16 +120,18 @@ public abstract class Person implements UserDetails {
 		this.username = username;
 		this.password = password;
 		this.verified = verified;
+		this.age = age;
 		this.lastPasswordResetDate = lastPasswordResetDate;
 		this.authorities = authorities;
 	}
     
-    public Person(String firstName, String lastName, String username, String password, boolean verified) {
+    public Person(String firstName, String lastName, String username, String password, boolean verified, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.verified = verified;
+        this.age = age;
         this.authorities = new ArrayList<>();
     }
 

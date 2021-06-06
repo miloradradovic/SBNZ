@@ -31,8 +31,12 @@ public class User extends Person{
         return super.isVerified();
     }
 
-    public User(String firstName, String lastName, String username, String password, boolean verified) {
-        super(firstName, lastName, username, password, verified);
+    public User(String firstName, String lastName, String username, String password, boolean verified, int age) {
+        super(firstName, lastName, username, password, verified,age);
+    }
+    
+    public User() {
+    	super();
     }
     
 }

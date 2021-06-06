@@ -80,15 +80,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/log-out")
-    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMINISTRATOR')")
-    public ResponseEntity<String> logout() {
-
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<?> logout() {
+    	System.out.println("dvadeset");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Person person = (Person) authentication.getPrincipal();
         String username = person.getUsername();
         kieService.removeKieSession(username);
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok("Successfully logged out.");
+        return ResponseEntity.ok(null);
     }
 
     // U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
@@ -120,7 +120,7 @@ public class AuthenticationController {
             return new ResponseEntity<>("Username or email already exists.", HttpStatus.BAD_REQUEST);
         }
         existUser = new User(userRequest.getFirstName(), userRequest.getLastName(), userRequest.getUsername(),
-                passwordEncoder.encode(userRequest.getPassword()), true);
+                passwordEncoder.encode(userRequest.getPassword()), true, userRequest.getAge());
 
         long role = 2;
         List<Authority> auth = authorityService.findById(role);

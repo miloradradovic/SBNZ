@@ -48,7 +48,7 @@ public class TrainingService {
     public void doCEP(List<CEPInput> input) {
         KieSession kieSession = kieService.generateCEPSession();
         for (CEPInput cep : input) {
-            kieSession.insert(cep);
+            kieSession.insert(cep); 
             kieSession.fireAllRules();
             try {
                 Thread.sleep(1000);

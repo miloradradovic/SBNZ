@@ -10,6 +10,7 @@ import { NouisliderModule } from 'ng2-nouislider';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { LoginComponent } from './login/login.component';
       ],
     declarations: [
         LandingPageComponent,
-        LoginComponent
+        LoginComponent,
+        RegisterComponent
     ],
     exports:[  ]
 })

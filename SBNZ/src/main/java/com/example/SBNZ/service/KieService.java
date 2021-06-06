@@ -52,6 +52,10 @@ public class KieService {
     }
 
     public void removeKieSession(String username) {
+    	if(sessions.get(username) == null) {
+    		return;
+    	}
+    	
         sessions.get(username).dispose();
         sessions.remove(username);
     }

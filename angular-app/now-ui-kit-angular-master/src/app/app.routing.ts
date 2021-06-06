@@ -9,9 +9,11 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './examples/profile/profile.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes =[
     { path: '',                     component: LandingPageComponent },
+    { path: 'signup',               component: RegisterComponent },
     { path: 'login',                component: LoginComponent },
     { path: 'index',                component: ComponentsComponent },
     { path: 'nucleoicons',          component: NucleoiconsComponent },

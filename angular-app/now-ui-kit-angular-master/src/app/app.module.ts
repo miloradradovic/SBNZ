@@ -12,6 +12,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { PagesModule } from './pages/pages.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatIconModule} from '@angular/material/icon';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpAuthInterceptor } from './interceptors/http-auth.interceptor';
 
 
 @NgModule({
@@ -31,7 +33,7 @@ import {MatIconModule} from '@angular/material/icon';
         MatSnackBarModule,
         MatIconModule
     ],
-    providers: [],
+    providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true}],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

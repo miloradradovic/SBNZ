@@ -7,7 +7,7 @@
               <span class="button-bar"></span>
               <span class="button-bar"></span>
           </a>
-           <div ngbDropdownMenu>
+           <div *ngIf="isUser()" ngbDropdownMenu>
              <a class="dropdown-header">Dropdown header</a>
              <a class="dropdown-item" href="#">Action</a>
              <a class="dropdown-item" href="#">Another action</a>
@@ -20,7 +20,7 @@
          </div>
       </div>
         <div class="navbar-translate">
-            <a class="navbar-brand" [routerLink]="['/index']" placement="bottom">
+            <a class="navbar-brand" [routerLink]="['/']" placement="bottom">
                 Be Fit
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" (click)="sidebarToggle()">
@@ -49,21 +49,9 @@
                         <p>Upgrade to PRO</p>
                     </a>
                 </li>-->
-                <li class="nav-item">
-                  <a class="nav-link" rel="tooltip" title="Follow us on Twitter" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank">
-                    <i class="fab fa-twitter"></i>
-                    <p class="d-lg-none d-xl-none">Twitter</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/CreativeTim" target="_blank">
-                    <i class="fab fa-facebook-square"></i>
-                    <p class="d-lg-none d-xl-none">Facebook</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom" (click)="logout()" target="_blank">
-                    <mat-icon aria-hidden="false" aria-label="Example home icon">logout</mat-icon>
+                <li *ngIf="isUser()" class="nav-item">
+                  <a class="nav-link" (click)="logout($event)" href="#" target="_blank">
+                    <mat-icon>logout</mat-icon>
                   </a>
                 </li>
             </ul>

@@ -1,5 +1,6 @@
 package com.example.SBNZ.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -19,18 +20,33 @@ public class PersonToRegisterDTO {
     @NotBlank
     @Size(min = 8)
     private String password;
+    
+    @Min(18)
+    private int age;
 
     public PersonToRegisterDTO() {
     }
 
-    public PersonToRegisterDTO(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String username, @NotBlank @Size(min = 8) String password) {
+    public PersonToRegisterDTO(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String username, @NotBlank @Size(min = 8) String password,
+    		@NotBlank @Size(min = 8) int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.age = age;
     }
+    
+    
 
-    public int getId() {
+    public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public int getId() {
         return id;
     }
 

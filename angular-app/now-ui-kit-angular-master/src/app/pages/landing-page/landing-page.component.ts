@@ -58,7 +58,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   isUser(){
-    return JSON.parse(localStorage.getItem('user')).role === "ROLE_USER";
+    return JSON.parse(localStorage.getItem('user'))?.role === "ROLE_USER";
   }
 
 }

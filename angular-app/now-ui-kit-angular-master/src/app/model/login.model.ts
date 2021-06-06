@@ -27,3 +27,11 @@ export class LogInModel {
       return this.role === 'ROLE_USER' ? UserRole.USER : UserRole.UNAUTHORIZED;
     }
   }
+
+export interface RegisterModel {
+    firstName: String,
+    lastName: String,
+    username: String,
+    password: String,
+    age: number
+}
