@@ -1,0 +1,38 @@
+<div class="wrapper">
+    <div class="page-header clear-filter" >
+      <div class="page-header-image"  style="background-image: url('assets/img/landing_background.jpg'); filter: brightness(30%);">
+  
+      </div>
+        <div class="container">
+            <div class="content-center brand">
+                <img class="n-logo" src="assets/img/logo.png" alt="">
+                <h1 class="h1-seo">Everything you need.</h1>
+                <h3>Free exercises, diet plans and more upcoming!</h3>
+                <a href="/login" style="margin-left:30%; width: 40%;" class="btn btn-primary btn-round btn-lg btn-block">Sign in</a>
+                <h6 style="margin-top: 2%;">
+                    <a href="#pablo" class="link" >Create Account</a>
+                </h6>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isUser()" class="section section-examples" data-background-color="black">
+            <div class="space-50"></div>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <a [routerLink]="['/examples/landing']">
+                            <img src="assets/img/gym_wallpaper.jpg" alt="Image" class="img-raised">
+                        </a>
+                        <a [routerLink]="['/examples/landing']" class="btn btn-simple btn-primary btn-round">Get Training plan</a>
+                    </div>
+                    <div class="col">
+                        <a [routerLink]="['/examples/profile']">
+                            <img src="assets/img/diet_wallpaper.jpeg" alt="Image" class="img-raised">
+                        </a>
+                        <a [routerLink]="['/examples/profile']" class="btn btn-simple btn-primary btn-round">Get Diet plan</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  
