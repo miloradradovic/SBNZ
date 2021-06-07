@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.SBNZ.model.Person;
+import com.example.SBNZ.model.User;
+import com.example.SBNZ.repository.DietRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.QueryResults;
@@ -29,11 +31,17 @@ public class DietService {
 
     @Autowired
     private MealRepository mealRepository;
-    
+
+    @Autowired
+    private DietRepository dietRepository;
+
+    @Autowired
+    private UserService userService;
 
     public Diet getDiet(InputDataDiet inputData) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Person person = (Person) authentication.getPrincipal();
+        User user = userService.findByUsername(person.getUsername());
         String username = person.getUsername();
         KieSession kieSession = kieService.getKieSession(username);
         List<Meal> meals = mealRepository.findAll();
@@ -45,6 +53,9 @@ public class DietService {
         kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
         kieService.clearWorkingMemory(username);
+        Diet saved = dietRepository.save(inputData.getDiet());
+        user.setDiet(saved);
+        userService.update(user);
         return inputData.getDiet();
     }
     
@@ -64,5 +75,11 @@ public class DietService {
      	}
      	kieSession.dispose();
      	return null;
+    }
+
+    public Diet findByUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Person person = (Person) authentication.getPrincipal();
+        return userService.findByUsername(person.getUsername()).getDiet();
     }
 }

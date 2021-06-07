@@ -2,6 +2,12 @@ package com.example.SBNZ.api;
 
 import java.util.List;
 
+import com.example.SBNZ.dto.DietDTO;
+import com.example.SBNZ.dto.MealDTO;
+import com.example.SBNZ.dto.TrainingPlanDTO;
+import com.example.SBNZ.mappers.DietMapper;
+import com.example.SBNZ.mappers.MealMapper;
+import com.example.SBNZ.model.training.TrainingPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +30,32 @@ public class DietController {
     @Autowired
     DietService dietService;
 
+    @Autowired
+    DietMapper dietMapper;
+
+    @Autowired
+    MealMapper mealMapper;
+
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Diet> getDiet(@RequestBody InputDataDiet input) {
-    	System.out.println(input);
+    public ResponseEntity<DietDTO> getDiet(@RequestBody InputDataDiet input) {
         Diet result = dietService.getDiet(input);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(dietMapper.toDTO(result), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.POST, value="/searchMeals")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<List<Meal>> searchMeals(@RequestBody SearchDiet input) {
+    public ResponseEntity<List<MealDTO>> searchMeals(@RequestBody SearchDiet input) {
     	System.out.println(input);
         List<Meal> meals = dietService.getMeals(input);
-        return new ResponseEntity<>(meals, HttpStatus.OK);
+        return new ResponseEntity<>(mealMapper.toDTOList(meals), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/get-diet-by-logged-in-user", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<DietDTO> getDietOfLoggedInUser() {
+
+        Diet diet = dietService.findByUser();
+        return new ResponseEntity<DietDTO>(dietMapper.toDTO(diet), HttpStatus.OK);
     }
 }

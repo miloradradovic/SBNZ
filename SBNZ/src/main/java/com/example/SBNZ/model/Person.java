@@ -132,7 +132,16 @@ public abstract class Person implements UserDetails {
         this.password = password;
         this.verified = verified;
         this.age = age;
-        this.authorities = new ArrayList<>();
+    }
+    
+    public Person(int id,String firstName, String lastName, String username, String password, boolean verified, int age) {
+        this.id = id;
+    	this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.verified = verified;
+        this.age = age;
     }
 
 }
