@@ -111,8 +111,16 @@ public abstract class Person implements UserDetails {
 		this.authorities = authorities;
 	}
 
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
 	public Person(int id, String firstName, String lastName, String username, String password, boolean verified, int age,
-			Timestamp lastPasswordResetDate, List<Authority> authorities) {
+				  Timestamp lastPasswordResetDate, List<Authority> authorities) {
 		super();
 		this.id = id;
 		this.firstName = firstName;

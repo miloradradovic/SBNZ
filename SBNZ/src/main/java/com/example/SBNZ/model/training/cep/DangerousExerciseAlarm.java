@@ -1,5 +1,7 @@
 package com.example.SBNZ.model.training.cep;
 
+import com.example.SBNZ.model.User;
+import com.example.SBNZ.model.training.Exercise;
 import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
 
@@ -7,25 +9,22 @@ import java.io.Serializable;
 
 @Role(Role.Type.EVENT)
 @Expires("15s")
-public class StableHeartRateEvent implements Serializable {
+public class DangerousExerciseAlarm implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-    private double currentRate;
     private String message;
 
-    public StableHeartRateEvent(double currentRate, String message) {
-        this.currentRate = currentRate;
+    public DangerousExerciseAlarm() {
+    }
+
+    public DangerousExerciseAlarm(String message) {
         this.message = message;
         System.out.println(message);
     }
 
-    public double getCurrentRate() {
-        return currentRate;
-    }
-
-    public void setCurrentRate(double currentRate) {
-        this.currentRate = currentRate;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getMessage() {

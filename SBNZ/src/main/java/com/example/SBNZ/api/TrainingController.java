@@ -1,6 +1,8 @@
 package com.example.SBNZ.api;
 
+import com.example.SBNZ.dto.CEPInputDTO;
 import com.example.SBNZ.dto.TrainingPlanDTO;
+import com.example.SBNZ.mappers.CEPInputMapper;
 import com.example.SBNZ.mappers.TrainingPlanMapper;
 import com.example.SBNZ.model.Person;
 import com.example.SBNZ.model.TestRuleModel;
@@ -8,6 +10,7 @@ import com.example.SBNZ.model.training.InputDataTraining;
 import com.example.SBNZ.model.training.Training;
 import com.example.SBNZ.model.training.TrainingPlan;
 import com.example.SBNZ.model.training.cep.CEPInput;
+import com.example.SBNZ.model.training.cep.CEPOutput;
 import com.example.SBNZ.service.TrainingPlanService;
 import com.example.SBNZ.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,9 @@ public class TrainingController {
     @Autowired
     TrainingPlanMapper trainingPlanMapper;
 
+    @Autowired
+    CEPInputMapper cepInputMapper;
+
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<TrainingPlanDTO> getTraining(@RequestBody InputDataTraining input) {
@@ -44,10 +50,10 @@ public class TrainingController {
 
     @RequestMapping(value = "/cep", method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> doCEP(@RequestBody List<CEPInput> input) {
+    public ResponseEntity<CEPOutput> doCEP(@RequestBody CEPInputDTO input) {
 
-        trainingService.doCEP(input);
-        return new ResponseEntity<>(HttpStatus.OK);
+        CEPOutput cepOutput = trainingService.doCEP(cepInputMapper.toEntity(input));
+        return new ResponseEntity<>(cepOutput, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/get-plan-by-logged-in-user", method = RequestMethod.GET)

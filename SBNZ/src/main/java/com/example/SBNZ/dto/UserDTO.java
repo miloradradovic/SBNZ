@@ -7,18 +7,19 @@ public class UserDTO {
     private String lastName;
     private String username;
     private String password;
+    private int age;
 
     public UserDTO() {
     }
 
-    public UserDTO(String firstName, String lastName, String username, String password) {
+    public UserDTO(String firstName, String lastName, String username, String password, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
     }
 
-    public UserDTO(int id, String firstName, String lastName, String username, String password) {
+    public UserDTO(int id, String firstName, String lastName, String username, String password, int age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,5 +65,13 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

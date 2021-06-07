@@ -3,6 +3,8 @@ package com.example.SBNZ.model;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import com.example.SBNZ.model.diet.Diet;
+import com.example.SBNZ.model.training.HeartRateProblem;
+import com.example.SBNZ.model.training.Session;
 import com.example.SBNZ.model.training.TrainingPlan;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +13,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,6 +28,10 @@ public class User extends Person{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "diet_id", referencedColumnName = "id")
     private Diet diet;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@JoinColumn(name = "userId")
+    private List<HeartRateProblem> problems = new ArrayList<>();
 
     @Override
     public boolean isAccountNonExpired() {
@@ -59,10 +66,34 @@ public class User extends Person{
     }
 
 
-    public User(String firstName, String lastName, String username, String password, boolean verified,int age, TrainingPlan trainingPlan, Diet diet) {
+    public User(String firstName, String lastName, String username, String password, boolean verified,int age, TrainingPlan trainingPlan, Diet diet, List<HeartRateProblem> problems) {
         super(firstName, lastName, username, password, verified, age);
         this.trainingPlan = trainingPlan;
         this.diet = diet;
+        this.problems = problems;
     }
 
+    public TrainingPlan getTrainingPlan() {
+        return trainingPlan;
+    }
+
+    public void setTrainingPlan(TrainingPlan trainingPlan) {
+        this.trainingPlan = trainingPlan;
+    }
+
+    public Diet getDiet() {
+        return diet;
+    }
+
+    public void setDiet(Diet diet) {
+        this.diet = diet;
+    }
+
+    public List<HeartRateProblem> getProblems() {
+        return problems;
+    }
+
+    public void setProblems(List<HeartRateProblem> problems) {
+        this.problems = problems;
+    }
 }

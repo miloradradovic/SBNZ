@@ -6,13 +6,42 @@ import com.example.SBNZ.model.training.cep.HighHeartRateAlarm;
 import com.example.SBNZ.model.training.cep.LowHeartRateEvent;
 import com.example.SBNZ.model.training.cep.LowHeartRateAlarm;
 import com.example.SBNZ.model.training.cep.StableHeartRateEvent;
+import com.example.SBNZ.model.training.cep.DangerousExerciseAlarm;
+import com.example.SBNZ.model.training.HeartRateProblem;
+import com.example.SBNZ.model.User;
+import java.time.LocalDate;
+import com.example.SBNZ.enums.training.HeartRateProblemType;
 
+rule "When exercise is in the problematic exercises in the last 1 month -> raise the DangerousExerciseAlarm"
+    no-loop
+    when
+        $cepInput: CEPInput($currentExercise: exercise, $currentUser: user, user.getProblems().size() > 0, $problematicExercises: user.getProblems())
+
+        Number(intValue > 0) from accumulate(
+                                        HeartRateProblem($hrp: this, exercise.getId() == $currentExercise.getId(),
+                                        dateOfProblem.isAfter(LocalDate.now().minusMonths(1))
+                                        ) from $problematicExercises,
+                                        count(1)
+                                    )
+   then
+        insert(new DangerousExerciseAlarm("This exercise is problematic for you!"));
+    end
+
+rule "When heart rate is stable"
+	no-loop
+	when
+        $cepInput: CEPInput($heartRate: heartRate, heartRate >= (70*(220-user.getAge())/100), heartRate <= (220 - user.getAge()))
+        not (DangerousExerciseAlarm())
+	then
+        insert(new StableHeartRateEvent($heartRate, "Heart rate " + Double.toString($heartRate) + " is stable!"));
+	end
 
 rule "When heart rate is high but alarm is not created"
 	no-loop
 	when
-        $cepInput: CEPInput($heartRate: heartRate, heartRate > 80.0)
+        $cepInput: CEPInput($heartRate: heartRate, heartRate > (220 - user.getAge()))
         not (HighHeartRateAlarm())
+        not (DangerousExerciseAlarm())
 	then
         insert(new HighHeartRateEvent($heartRate, "WARNING! Heart rate " + Double.toString($heartRate) + " is too high!"));
 	end
@@ -20,42 +49,39 @@ rule "When heart rate is high but alarm is not created"
 rule "When heart rate is low but alarm is not created"
 	no-loop
 	when
-        $cepInput: CEPInput($heartRate: heartRate, heartRate < 60.0)
+        $cepInput: CEPInput($heartRate: heartRate, heartRate < (70*(220-user.getAge())/100))
         not (LowHeartRateAlarm())
+        not (DangerousExerciseAlarm())
 	then
         insert(new LowHeartRateEvent($heartRate, "WARNING! Heart rate " + Double.toString($heartRate) + " is too low!"));
 	end
 
-rule "When heart rate is stable"
+rule "5 times high heart rate in 10 seconds"
 	no-loop
 	when
-        $cepInput: CEPInput($heartRate: heartRate, heartRate >= 60.0, heartRate <= 80.0)
-        not (LowHeartRateAlarm())
-	then
-        insert(new StableHeartRateEvent($heartRate, "Heart rate " + Double.toString($heartRate) + " is stable!"));
-	end
-
-
-rule "5 times high heart rate in 10 seconds"
-    no-loop
-	when
+	    $cepInput: CEPInput($currentExercise: exercise, $currentUser: user)
 		Number(intValue > 5) from accumulate (
-			$highEvent: HighHeartRateEvent()
-			over window:time(10s),
+			$highEvent: HighHeartRateEvent(),
+			// over window:time(20s),
 			count($highEvent)
 		)
+		not (HeartRateProblem())
 	then
 	    insert(new HighHeartRateAlarm("Your heart rate is alarmingly high!"));
+	    insert(new HeartRateProblem($currentExercise, $currentUser, LocalDate.now(), HeartRateProblemType.HIGH));
 end;
 
 rule "5 times low heart rate in 10 seconds"
     no-loop
 	when
+	    $cepInput: CEPInput($currentExercise: exercise, $currentUser: user)
 		Number(intValue > 5) from accumulate (
-			$lowEvent: LowHeartRateEvent()
-			over window:time(10s),
+			$lowEvent: LowHeartRateEvent(),
+			// over window:time(10s),
 			count($lowEvent)
 		)
+		not (HeartRateProblem())
 	then
 	    insert(new LowHeartRateAlarm("Your heart rate is alarmingly low!"));
+	    insert(new HeartRateProblem($currentExercise, $currentUser, LocalDate.now(), HeartRateProblemType.LOW));
 end;

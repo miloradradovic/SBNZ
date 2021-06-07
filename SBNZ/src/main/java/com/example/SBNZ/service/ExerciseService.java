@@ -16,4 +16,9 @@ public class ExerciseService {
     public List<Exercise> findAll() {
         return exerciseRepository.findAll();
     }
+
+    public Exercise findById(int id) {
+        return exerciseRepository.findById(id);
+    }
+
 }

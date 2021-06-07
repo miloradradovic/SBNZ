@@ -16,7 +16,7 @@
 	<kbase name="queryBase" packages="example.SBNZ.query">
 		<ksession name="querySession"/>
 	</kbase>
-	<kbase name="cepKbase" eventProcessingMode="stream" packages="cep">
-		<ksession name="cepKsession"/>
+	<kbase name="cepKbase" eventProcessingMode="cloud" packages="cep">
+		<ksession name="cepKsession" clockType="realtime"/>
 	</kbase>
 </kmodule>

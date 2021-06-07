@@ -43,7 +43,7 @@ public class DietService {
         Person person = (Person) authentication.getPrincipal();
         User user = userService.findByUsername(person.getUsername());
         String username = person.getUsername();
-        KieSession kieSession = kieService.getKieSession(username);
+        KieSession kieSession = kieService.getKieSession(username, "basic");
         List<Meal> meals = mealRepository.findAll();
         for (Meal meal: meals) {
             kieSession.insert(meal);
@@ -52,7 +52,7 @@ public class DietService {
         kieSession.insert(inputData);
         kieSession.getAgenda().getAgendaGroup("Ruleflow1").setFocus();
         kieSession.fireAllRules();
-        kieService.clearWorkingMemory(username);
+        kieService.clearWorkingMemory(username, "basic");
         Diet saved = dietRepository.save(inputData.getDiet());
         user.setDiet(saved);
         userService.update(user);
