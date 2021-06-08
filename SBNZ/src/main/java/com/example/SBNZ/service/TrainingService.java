@@ -72,6 +72,7 @@ public class TrainingService {
             currentExercise = input.getExercise();
         } else if (currentExercise.getId() != input.getExercise().getId()) {
             kieService.clearWorkingMemory(username, "cep");
+            currentExercise = input.getExercise();
         }
         kieSession.insert(input);
         kieSession.fireAllRules();
@@ -79,9 +80,13 @@ public class TrainingService {
         Collection<FactHandle> handlers = kieSession.getFactHandles();
         for (FactHandle handle: handlers) {
             Object obj = kieSession.getObject(handle);
+            if (obj.getClass() == CEPInput.class) {
+                kieSession.delete(handle);
+            }
             if (obj.getClass() == HeartRateProblem.class) {
                 HeartRateProblem saved = heartRateProblemService.saveOne((HeartRateProblem) obj);
                 kieService.clearWorkingMemory(username, "cep");
+                // kieService.removeCEPKieSession(username);
                 if (saved.getHeartRateProblemType() == HeartRateProblemType.HIGH) {
                     return new CEPOutput(1);
                 } else {
@@ -90,6 +95,7 @@ public class TrainingService {
             }
             if (obj.getClass() == DangerousExerciseAlarm.class) {
                 kieService.clearWorkingMemory(username, "cep");
+                // kieService.removeCEPKieSession(username);
                 return new CEPOutput(3);
             }
         }

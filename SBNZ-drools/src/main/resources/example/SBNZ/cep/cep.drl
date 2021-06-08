@@ -65,7 +65,7 @@ rule "5 times high heart rate in 10 seconds"
 			// over window:time(20s),
 			count($highEvent)
 		)
-		not (HeartRateProblem())
+		// not (HeartRateProblem())
 	then
 	    insert(new HighHeartRateAlarm("Your heart rate is alarmingly high!"));
 	    insert(new HeartRateProblem($currentExercise, $currentUser, LocalDate.now(), HeartRateProblemType.HIGH));
@@ -80,7 +80,7 @@ rule "5 times low heart rate in 10 seconds"
 			// over window:time(10s),
 			count($lowEvent)
 		)
-		not (HeartRateProblem())
+		// not (HeartRateProblem())
 	then
 	    insert(new LowHeartRateAlarm("Your heart rate is alarmingly low!"));
 	    insert(new HeartRateProblem($currentExercise, $currentUser, LocalDate.now(), HeartRateProblemType.LOW));
