@@ -21,4 +21,10 @@ public class ExerciseService {
         return exerciseRepository.findById(id);
     }
 
+    public Exercise save(Exercise exerciseToSave) {
+        if (exerciseRepository.findByName(exerciseToSave.getName()) == null) {
+            return exerciseRepository.save(exerciseToSave);
+        }
+        return null;
+    }
 }

@@ -6,12 +6,30 @@ import com.example.SBNZ.enums.diet.Goal;
 import com.example.SBNZ.enums.diet.MealType;
 import com.example.SBNZ.model.diet.Meal;
 
-query "Recommend meals" (MealType $mealType, int $kCalFrom, int $kCalTo, int $proteinsFrom, 
+query "Recommend meals with mealtype" (MealType $mealType, int $kCalFrom, int $kCalTo, int $proteinsFrom,
 						int $proteinsTo, int $fatsFrom, int $fatsTo, int $carbsFrom, int $carbsTo)
             $inputData: InputDataDiet($meals: meals)
         	accumulate(
                            Meal($m: this,
                                     mealType == $mealType,
+                                    kCal >= $kCalFrom,
+                                    kCal <= $kCalTo,
+                                    proteins >= $proteinsFrom,
+                                    proteins <= $proteinsTo,
+                                    fats >= $fatsFrom,
+                                    fats <= $fatsTo,
+                                    carbonHydrates >= $carbsFrom,
+									carbonHydrates <= $carbsTo
+                                    ) from $meals,
+                           $filteredMeals: collectList($m)
+                		)
+end
+
+query "Recommend meals without mealtype" (int $kCalFrom, int $kCalTo, int $proteinsFrom,
+						int $proteinsTo, int $fatsFrom, int $fatsTo, int $carbsFrom, int $carbsTo)
+            $inputData: InputDataDiet($meals: meals)
+        	accumulate(
+                           Meal($m: this,
                                     kCal >= $kCalFrom,
                                     kCal <= $kCalTo,
                                     proteins >= $proteinsFrom,

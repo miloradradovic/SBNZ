@@ -1,12 +1,14 @@
 package com.example.SBNZ.mappers;
 
 import com.example.SBNZ.dto.MealDTO;
+import com.example.SBNZ.enums.diet.HealthIssue;
 import com.example.SBNZ.model.diet.Meal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class MealMapper implements MapperInterface<Meal, MealDTO>{
@@ -21,11 +23,11 @@ public class MealMapper implements MapperInterface<Meal, MealDTO>{
     public Meal toEntity(MealDTO dto) {
         if (dto.getId() == -1) {
             return new Meal(dto.getkCal(), dto.getCarbonHydrates(), dto.getProteins(), dto.getFats(), dto.getName(),
-                    mealTypeMapper.toEntity(dto.getMealType()), dto.getJunkPercentage(), healthIssueMapper.toEntityList(dto.getHealthIssueTypes()),
+                    mealTypeMapper.toEntity(dto.getMealType()), dto.getJunkPercentage(), healthIssueMapper.toEntitySet(dto.getHealthIssueTypes()),
                     dto.getRecipe());
         }
         return new Meal(dto.getId(), dto.getkCal(), dto.getCarbonHydrates(), dto.getProteins(), dto.getFats(), dto.getName(),
-                mealTypeMapper.toEntity(dto.getMealType()), dto.getJunkPercentage(), healthIssueMapper.toEntityList(dto.getHealthIssueTypes()),
+                mealTypeMapper.toEntity(dto.getMealType()), dto.getJunkPercentage(), healthIssueMapper.toEntitySet(dto.getHealthIssueTypes()),
                 dto.getRecipe());
     }
 
@@ -33,11 +35,11 @@ public class MealMapper implements MapperInterface<Meal, MealDTO>{
     public MealDTO toDTO(Meal entity) {
         if (entity.getId() == -1) {
             return new MealDTO(entity.getkCal(), entity.getCarbonHydrates(), entity.getProteins(), entity.getFats(), entity.getName(),
-                    mealTypeMapper.toDTO(entity.getMealType()), entity.getJunkPercentage(), healthIssueMapper.toDTOList(entity.getHealthIssueTypes()),
+                    mealTypeMapper.toDTO(entity.getMealType()), entity.getJunkPercentage(), healthIssueMapper.toDTOList2(entity.getHealthIssueTypes()),
                     entity.getRecipe());
         }
         return new MealDTO(entity.getId(), entity.getkCal(), entity.getCarbonHydrates(), entity.getProteins(), entity.getFats(), entity.getName(),
-                mealTypeMapper.toDTO(entity.getMealType()), entity.getJunkPercentage(), healthIssueMapper.toDTOList(entity.getHealthIssueTypes()),
+                mealTypeMapper.toDTO(entity.getMealType()), entity.getJunkPercentage(), healthIssueMapper.toDTOList2(entity.getHealthIssueTypes()),
                 entity.getRecipe());
     }
 

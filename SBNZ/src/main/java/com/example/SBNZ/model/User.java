@@ -14,7 +14,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -29,9 +31,9 @@ public class User extends Person{
     @JoinColumn(name = "diet_id", referencedColumnName = "id")
     private Diet diet;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     //@JoinColumn(name = "userId")
-    private List<HeartRateProblem> problems = new ArrayList<>();
+    private Set<HeartRateProblem> problems = new HashSet<>();
 
     @Override
     public boolean isAccountNonExpired() {
@@ -66,7 +68,7 @@ public class User extends Person{
     }
 
 
-    public User(String firstName, String lastName, String username, String password, boolean verified,int age, TrainingPlan trainingPlan, Diet diet, List<HeartRateProblem> problems) {
+    public User(String firstName, String lastName, String username, String password, boolean verified,int age, TrainingPlan trainingPlan, Diet diet, Set<HeartRateProblem> problems) {
         super(firstName, lastName, username, password, verified, age);
         this.trainingPlan = trainingPlan;
         this.diet = diet;
@@ -89,11 +91,11 @@ public class User extends Person{
         this.diet = diet;
     }
 
-    public List<HeartRateProblem> getProblems() {
+    public Set<HeartRateProblem> getProblems() {
         return problems;
     }
 
-    public void setProblems(List<HeartRateProblem> problems) {
+    public void setProblems(Set<HeartRateProblem> problems) {
         this.problems = problems;
     }
 }

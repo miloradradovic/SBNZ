@@ -5,18 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.example.SBNZ.enums.diet.HealthIssue;
 import com.example.SBNZ.enums.diet.MealType;
@@ -60,17 +49,17 @@ public class Meal {
     @Column(name = "junkPercentage", nullable = false)
     private int junkPercentage;
    
-    @ElementCollection(targetClass = HealthIssue.class)
+    @ElementCollection(targetClass = HealthIssue.class, fetch = FetchType.EAGER)
     @JoinTable(name = "healthIssueTypes", joinColumns = @JoinColumn(name = "meal_id"))
     @Column(name = "healthIssueTypes", nullable = false)
     @Enumerated(EnumType.STRING)
-    private List<HealthIssue> healthIssueTypes;
+    private Set<HealthIssue> healthIssueTypes;
     
     
     @Column(name = "recipe", nullable = true)
     private String recipe;
 
-	public Meal(int kCal, int carbonHydrates, int proteins, int fats, String name, MealType mealType, int junkPercentage, List<HealthIssue> healthIssueTypes, String recipe) {
+	public Meal(int kCal, int carbonHydrates, int proteins, int fats, String name, MealType mealType, int junkPercentage, Set<HealthIssue> healthIssueTypes, String recipe) {
 		this.kCal = kCal;
 		this.carbonHydrates = carbonHydrates;
 		this.proteins = proteins;
@@ -162,12 +151,12 @@ public class Meal {
 	}
 
 
-	public List<HealthIssue> getHealthIssueTypes() {
+	public Set<HealthIssue> getHealthIssueTypes() {
 		return healthIssueTypes;
 	}
 
 
-	public void setHealthIssueTypes(List<HealthIssue> healthIssueTypes) {
+	public void setHealthIssueTypes(Set<HealthIssue> healthIssueTypes) {
 		this.healthIssueTypes = healthIssueTypes;
 	}
 

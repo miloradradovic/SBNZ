@@ -25,6 +25,7 @@ rule "When exercise is in the problematic exercises in the last 1 month -> raise
                                     )
    then
         insert(new DangerousExerciseAlarm("This exercise is problematic for you!"));
+        drools.halt();
     end
 
 rule "When heart rate is stable"

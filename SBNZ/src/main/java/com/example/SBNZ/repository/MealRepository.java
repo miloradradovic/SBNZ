@@ -7,6 +7,7 @@ import com.example.SBNZ.model.diet.Meal;
 
 @Repository
 public interface MealRepository extends JpaRepository<Meal, Integer> {
-	
-	
+
+
+    Meal findByName(String name);
 }

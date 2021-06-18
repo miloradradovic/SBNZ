@@ -4,7 +4,7 @@ import com.example.SBNZ.enums.diet.MealType;
 
 public class SearchDiet {
 
-	private MealType mealType;
+	private String mealType;
 	private int kcalFrom;
 	private int kcalTo;
 	private int proteinFrom;
@@ -14,7 +14,7 @@ public class SearchDiet {
 	private int carbsFrom;
 	private int carbsTo;
 	
-	public SearchDiet(MealType mealType, int kcalFrom, int kcalTo, int proteinFrom, int proteinTo, int fatFrom,
+	public SearchDiet(String mealType, int kcalFrom, int kcalTo, int proteinFrom, int proteinTo, int fatFrom,
 			int fatTo, int carbsFrom, int carbsTo) {
 		super();
 		this.mealType = mealType;
@@ -58,10 +58,10 @@ public class SearchDiet {
 		super();
 	}
 	
-	public MealType getMealType() {
+	public String getMealType() {
 		return mealType;
 	}
-	public void setMealType(MealType mealType) {
+	public void setMealType(String mealType) {
 		this.mealType = mealType;
 	}
 	public int getKcalFrom() {

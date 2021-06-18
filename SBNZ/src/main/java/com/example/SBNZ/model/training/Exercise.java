@@ -23,17 +23,17 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
     
     @Column(name = "description", nullable = false)
     private String description;
     
-    @ElementCollection(targetClass = Muscle.class)
+    @ElementCollection(targetClass = Muscle.class, fetch = FetchType.EAGER)
     @JoinTable(name = "muscles_exercise", joinColumns = @JoinColumn(name = "exercise_id"))
     @Column(name = "muscleList", nullable = false)
     @Enumerated(EnumType.STRING)
-    private List<Muscle> muscleList;
+    private Set<Muscle> muscleList;
     
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
@@ -50,7 +50,7 @@ public class Exercise {
     public Exercise() {
     }
 
-    public Exercise(int id, String name, String description, List<Muscle> muscleList, Difficulty difficulty, boolean equipment, ExerciseCategory exerciseCategory) {
+    public Exercise(int id, String name, String description, Set<Muscle> muscleList, Difficulty difficulty, boolean equipment, ExerciseCategory exerciseCategory) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -60,7 +60,7 @@ public class Exercise {
         this.exerciseCategory = exerciseCategory;
     }
 
-    public Exercise(String name, String description, List<Muscle> muscleList, Difficulty difficulty, boolean equipment, ExerciseCategory exerciseCategory) {
+    public Exercise(String name, String description, Set<Muscle> muscleList, Difficulty difficulty, boolean equipment, ExerciseCategory exerciseCategory) {
         this.name = name;
         this.description = description;
         this.muscleList = muscleList;
@@ -102,11 +102,11 @@ public class Exercise {
         this.description = description;
     }
 
-    public List<Muscle> getMuscleList() {
+    public Set<Muscle> getMuscleList() {
         return muscleList;
     }
 
-    public void setMuscleList(List<Muscle> muscleList) {
+    public void setMuscleList(Set<Muscle> muscleList) {
         this.muscleList = muscleList;
     }
 

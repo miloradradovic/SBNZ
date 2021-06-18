@@ -30,7 +30,7 @@ public class DietService {
     private KieService kieService;
 
     @Autowired
-    private MealRepository mealRepository;
+    private MealService mealService;
 
     @Autowired
     private DietRepository dietRepository;
@@ -44,7 +44,7 @@ public class DietService {
         User user = userService.findByUsername(person.getUsername());
         String username = person.getUsername();
         KieSession kieSession = kieService.getKieSession(username, "basic");
-        List<Meal> meals = mealRepository.findAll();
+        List<Meal> meals = mealService.findAll();
         for (Meal meal: meals) {
             kieSession.insert(meal);
         }
@@ -62,11 +62,19 @@ public class DietService {
     public List<Meal> getMeals(SearchDiet input){
     	KieSession kieSession = kieService.generateQuerySession();
     	InputDataDiet mockInput = new InputDataDiet();
-    	mockInput.setMeals(mealRepository.findAll());
+    	mockInput.setMeals(mealService.findAll());
         kieSession.insert(mockInput);
-     	QueryResults results = kieSession.getQueryResults("Recommend meals", input.getMealType(),input.getKcalFrom(),input.getKcalTo()
-     														,input.getProteinFrom(),input.getProteinTo(),input.getFatFrom(), input.getFatTo(),
-     														input.getCarbsFrom(),input.getCarbsTo());
+        QueryResults results;
+        input = checkSearchDietInput(input);
+        if (!input.getMealType().equals("")) {
+            results = kieSession.getQueryResults("Recommend meals with mealtype", MealType.valueOf(input.getMealType()),input.getKcalFrom(),input.getKcalTo()
+                    ,input.getProteinFrom(),input.getProteinTo(),input.getFatFrom(), input.getFatTo(),
+                    input.getCarbsFrom(),input.getCarbsTo());
+        } else {
+            results = kieSession.getQueryResults("Recommend meals without mealtype", input.getKcalFrom(),input.getKcalTo()
+                    ,input.getProteinFrom(),input.getProteinTo(),input.getFatFrom(), input.getFatTo(),
+                    input.getCarbsFrom(),input.getCarbsTo());
+        }
 
      	for(QueryResultsRow queryResult : results) {
      		List<Meal> meals = (List<Meal>) queryResult.get("$filteredMeals");
@@ -75,6 +83,22 @@ public class DietService {
      	}
      	kieSession.dispose();
      	return null;
+    }
+
+    private SearchDiet checkSearchDietInput(SearchDiet input) {
+        if (input.getCarbsTo() == 0) {
+            input.setCarbsTo(1000000);
+        }
+        if (input.getFatTo() == 0) {
+            input.setFatTo(10000000);
+        }
+        if (input.getKcalTo() == 0) {
+            input.setKcalTo(10000000);
+        }
+        if (input.getProteinTo() == 0) {
+            input.setProteinTo(10000000);
+        }
+        return input;
     }
 
     public Diet findByUser() {

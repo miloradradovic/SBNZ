@@ -82,7 +82,6 @@ public class AuthenticationController {
     @PostMapping("/log-out")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> logout() {
-    	System.out.println("dvadeset");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Person person = (Person) authentication.getPrincipal();
         String username = person.getUsername();

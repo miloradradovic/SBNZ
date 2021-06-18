@@ -1,12 +1,14 @@
 package com.example.SBNZ.mappers;
 
 import com.example.SBNZ.dto.ExerciseDTO;
+import com.example.SBNZ.enums.training.Muscle;
 import com.example.SBNZ.model.training.Exercise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ExerciseMapper implements MapperInterface<Exercise, ExerciseDTO> {
@@ -23,20 +25,20 @@ public class ExerciseMapper implements MapperInterface<Exercise, ExerciseDTO> {
     @Override
     public Exercise toEntity(ExerciseDTO dto) {
         if (dto.getId() == -1) {
-            return new Exercise(dto.getName(), dto.getDescription(), muscleMapper.toEntityList(dto.getMuscleList()),
+            return new Exercise(dto.getName(), dto.getDescription(), muscleMapper.toEntitySet(dto.getMuscleList()),
                     difficultyMapper.toEntity(dto.getDifficulty()), dto.isEquipment(), exerciseCategoryMapper.toEntity(dto.getExerciseCategory()));
         }
-        return new Exercise(dto.getId(), dto.getName(), dto.getDescription(), muscleMapper.toEntityList(dto.getMuscleList()),
+        return new Exercise(dto.getId(), dto.getName(), dto.getDescription(), muscleMapper.toEntitySet(dto.getMuscleList()),
                 difficultyMapper.toEntity(dto.getDifficulty()), dto.isEquipment(), exerciseCategoryMapper.toEntity(dto.getExerciseCategory()));
     }
 
     @Override
     public ExerciseDTO toDTO(Exercise entity) {
         if (entity.getId() == -1) {
-            return new ExerciseDTO(entity.getName(), entity.getDescription(), muscleMapper.toDTOList(entity.getMuscleList()),
+            return new ExerciseDTO(entity.getName(), entity.getDescription(), muscleMapper.toDTOList2(entity.getMuscleList()),
                     difficultyMapper.toDTO(entity.getDifficulty()), entity.isEquipment(), exerciseCategoryMapper.toDTO(entity.getExerciseCategory()));
         }
-        return new ExerciseDTO(entity.getId(), entity.getName(), entity.getDescription(), muscleMapper.toDTOList(entity.getMuscleList()),
+        return new ExerciseDTO(entity.getId(), entity.getName(), entity.getDescription(), muscleMapper.toDTOList2(entity.getMuscleList()),
                 difficultyMapper.toDTO(entity.getDifficulty()), entity.isEquipment(), exerciseCategoryMapper.toDTO(entity.getExerciseCategory()));
 
     }

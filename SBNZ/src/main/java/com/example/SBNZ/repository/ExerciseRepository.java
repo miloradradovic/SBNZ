@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
 
     Exercise findById(int id);
+
+    Exercise findByName(String name);
 }
