@@ -13,6 +13,10 @@ import { NucleoiconsComponent } from './nucleoicons/nucleoicons.component';
 import { ComponentsComponent } from './components.component';
 import { NotificationComponent } from './notification/notification.component';
 import { NgbdModalBasic } from './modal/modal.component';
+import { SingleTrainingComponent } from './training/training/single-training.component';
+import {MatCardModule} from '@angular/material/card';
+import { MealComponent } from './meal/training/meal.component';
+
 
 @NgModule({
     imports: [
@@ -21,7 +25,8 @@ import { NgbdModalBasic } from './modal/modal.component';
         NgbModule,
         NouisliderModule,
         RouterModule,
-        JwBootstrapSwitchNg2Module
+        JwBootstrapSwitchNg2Module,
+        MatCardModule
       ],
     declarations: [
         ComponentsComponent,
@@ -30,8 +35,10 @@ import { NgbdModalBasic } from './modal/modal.component';
         TypographyComponent,
         NucleoiconsComponent,
         NotificationComponent,
-        NgbdModalBasic
+        NgbdModalBasic,
+        SingleTrainingComponent,
+        MealComponent
     ],
-    exports:[ ComponentsComponent ]
+    exports:[ ComponentsComponent, SingleTrainingComponent, MealComponent ]
 })
 export class ComponentsModule { }

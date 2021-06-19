@@ -83,6 +83,11 @@ public class TrainingService {
             if (obj.getClass() == CEPInput.class) {
                 kieSession.delete(handle);
             }
+            if (obj.getClass() == DangerousExerciseAlarm.class) {
+                kieService.clearWorkingMemory(username, "cep");
+                // kieService.removeCEPKieSession(username);
+                return new CEPOutput(3);
+            }
             if (obj.getClass() == HeartRateProblem.class) {
                 HeartRateProblem saved = heartRateProblemService.saveOne((HeartRateProblem) obj);
                 kieService.clearWorkingMemory(username, "cep");
@@ -93,11 +98,7 @@ public class TrainingService {
                     return new CEPOutput(2);
                 }
             }
-            if (obj.getClass() == DangerousExerciseAlarm.class) {
-                kieService.clearWorkingMemory(username, "cep");
-                // kieService.removeCEPKieSession(username);
-                return new CEPOutput(3);
-            }
+
         }
         return null;
     }

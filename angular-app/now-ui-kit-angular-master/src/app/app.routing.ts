@@ -10,11 +10,17 @@ import { ProfileComponent } from './examples/profile/profile.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { TrainingComponent } from './pages/training-page/training.component';
+import { DietComponent } from './pages/diet-page/diet.component';
+import { SearchDietComponent } from './pages/search-diet/search-diet/search-diet.component';
 
 const routes: Routes =[
     { path: '',                     component: LandingPageComponent },
     { path: 'signup',               component: RegisterComponent },
     { path: 'login',                component: LoginComponent },
+    { path: 'training',             component: TrainingComponent },
+    { path: 'diet',                 component: DietComponent },
+    { path: 'search-diet',          component: SearchDietComponent },
     { path: 'index',                component: ComponentsComponent },
     { path: 'nucleoicons',          component: NucleoiconsComponent },
     { path: 'examples/landing',     component: LandingComponent },

@@ -15,8 +15,8 @@
                     </h6>
                 </div>
                 <div *ngIf="isUser()">
-                    <a style="margin-right:5%; width: 15%" class="btn btn-primary btn-round">My Trainigs</a>
-                    <a style="width: 15%" class="btn btn-primary btn-round">My Diets</a>
+                    <a href="/training" style="margin-right:5%; width: 15%" class="btn btn-primary btn-round">My Trainings</a>
+                    <a href="/search-diet" style="width: 15%" class="btn btn-primary btn-round">Search meals</a>
                 </div>
 
             </div>
@@ -27,16 +27,16 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
-                        <a [routerLink]="['/examples/landing']">
+                        <a [routerLink]="['/training']">
                             <img src="assets/img/gym_wallpaper.jpg" alt="Image" class="img-raised">
                         </a>
-                        <a [routerLink]="['/examples/landing']" class="btn btn-simple btn-primary btn-round">Get Training plan</a>
+                        <a [routerLink]="['/training']" class="btn btn-simple btn-primary btn-round">Get Training plan</a>
                     </div>
                     <div class="col">
-                        <a [routerLink]="['/examples/profile']">
+                        <a [routerLink]="['/diet']">
                             <img src="assets/img/diet_wallpaper.jpeg" alt="Image" class="img-raised">
                         </a>
-                        <a [routerLink]="['/examples/profile']" class="btn btn-simple btn-primary btn-round">Get Diet plan</a>
+                        <a [routerLink]="['/diet']" class="btn btn-simple btn-primary btn-round">Get Diet plan</a>
                     </div>
                 </div>
             </div>

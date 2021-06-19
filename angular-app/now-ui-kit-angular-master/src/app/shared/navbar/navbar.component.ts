@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { LogInService } from 'app/services/log-in.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-navbar',
@@ -11,7 +12,7 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(public location: Location, private element : ElementRef, private loginService: LogInService) {
+    constructor(public location: Location, private element : ElementRef, private loginService: LogInService,private router: Router) {
         this.sidebarVisible = false;
     }
 
@@ -59,6 +60,7 @@ export class NavbarComponent implements OnInit {
     logout(e){
         e.preventDefault();
         this.loginService.logOut();
+        this.router.navigateByUrl('/login')
     }
 
     isUser(){

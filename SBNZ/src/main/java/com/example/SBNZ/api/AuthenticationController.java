@@ -80,7 +80,6 @@ public class AuthenticationController {
     }
 
     @PostMapping("/log-out")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Person person = (Person) authentication.getPrincipal();

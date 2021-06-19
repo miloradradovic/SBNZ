@@ -14,6 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatIconModule} from '@angular/material/icon';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpAuthInterceptor } from './interceptors/http-auth.interceptor';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -31,7 +32,9 @@ import { HttpAuthInterceptor } from './interceptors/http-auth.interceptor';
         ExamplesModule,
         PagesModule,
         MatSnackBarModule,
-        MatIconModule
+        MatIconModule,
+        MatCardModule
+        
     ],
     providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true}],
     bootstrap: [AppComponent]
