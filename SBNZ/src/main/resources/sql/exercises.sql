@@ -57,8 +57,36 @@ insert into exercises (description, difficulty, equipment, exercise_category, na
 insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba58', 'MEDIUM', true, 'MASS_GAIN', 'Vezba58');
 insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba59', 'MEDIUM', true, 'MASS_GAIN', 'Vezba59');
 insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba60', 'MEDIUM', true, 'MASS_GAIN', 'Vezba60');
-
-
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba61', 'HIGH', true, 'MASS_GAIN', 'Vezba61');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba62', 'HIGH', true, 'MASS_GAIN', 'Vezba62');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba63', 'HIGH', true, 'MASS_GAIN', 'Vezba63');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba64', 'HIGH', true, 'MASS_GAIN', 'Vezba64');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba65', 'HIGH', true, 'MASS_GAIN', 'Vezba65');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba66', 'HIGH', true, 'MASS_GAIN', 'Vezba66');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba67', 'HIGH', true, 'MASS_GAIN', 'Vezba67');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba68', 'HIGH', true, 'MASS_GAIN', 'Vezba68');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba69', 'HIGH', true, 'MASS_GAIN', 'Vezba69');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba70', 'HIGH', true, 'MASS_GAIN', 'Vezba70');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba71', 'LOW', true, 'MASS_GAIN', 'Vezba71');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba72', 'LOW', true, 'MASS_GAIN', 'Vezba72');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba73', 'LOW', true, 'MASS_GAIN', 'Vezba73');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba74', 'LOW', true, 'MASS_GAIN', 'Vezba74');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba75', 'LOW', true, 'MASS_GAIN', 'Vezba75');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba76', 'LOW', true, 'MASS_GAIN', 'Vezba76');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba77', 'LOW', true, 'MASS_GAIN', 'Vezba77');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba78', 'LOW', true, 'MASS_GAIN', 'Vezba78');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba79', 'LOW', true, 'MASS_GAIN', 'Vezba79');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba80', 'LOW', true, 'MASS_GAIN', 'Vezba80');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba81', 'MEDIUM', false, 'WEIGHT_LOSS', 'Vezba81');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba82', 'MEDIUM', false, 'WEIGHT_LOSS', 'Vezba82');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba83', 'MEDIUM', false, 'WEIGHT_LOSS', 'Vezba83');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba84', 'MEDIUM', false, 'WEIGHT_LOSS', 'Vezba84');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba85', 'MEDIUM', false, 'WEIGHT_LOSS', 'Vezba85');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba86', 'MEDIUM', false, 'WEIGHT_LOSS', 'Vezba86');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba87', 'MEDIUM', true, 'MASS_GAIN', 'Vezba87');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba88', 'MEDIUM', true, 'MASS_GAIN', 'Vezba88');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba89', 'MEDIUM', true, 'MASS_GAIN', 'Vezba89');
+insert into exercises (description, difficulty, equipment, exercise_category, name) values ('Vezba90', 'MEDIUM', true, 'MASS_GAIN', 'Vezba90');
 
 
 insert into muscles_exercise(exercise_id, muscle_list) values (1, 'BICEPS');
