@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { InputDataTraining } from 'app/model/training.model';
+import { ExerciseModel, InputDataTraining } from 'app/model/training.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,13 @@ export class TrainingService {
   }
 
   search = (trainingInput: InputDataTraining) => this.http.post("http://localhost:8080/training", trainingInput);
+
+  cep = (heartRate: number, exerciseDTO: number) => this.http.post("http://localhost:8080/training/cep", {"heartRate": heartRate, "exerciseDTO": exerciseDTO});
+
+  getMyTrainings = () => this.http.get("http://localhost:8080/training/get-plan-by-logged-in-user");
+
+  addExercise = (exercise: ExerciseModel) => this.http.post("http://localhost:8080/exercises", exercise);
+
 
 /*
   logIn(auth: LogIn): Observable<any> {

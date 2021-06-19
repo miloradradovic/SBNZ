@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { InputDataTraining } from 'app/model/training.model';
-import { DataInputModel } from 'app/model/diet.model';
+import { DataInputModel, MealModel } from 'app/model/diet.model';
 import { QueryModel } from 'app/model/query.model';
 
 @Injectable({
@@ -17,6 +17,9 @@ export class DietService {
   search = (dietInput: DataInputModel) => this.http.post("http://localhost:8080/diet", dietInput);
 
   searchDiet = (searchModel: QueryModel) => this.http.post("http://localhost:8080/diet/searchMeals", searchModel);
+
+  addMeal = (mealModel: MealModel) => this.http.post("http://localhost:8080/meals", mealModel);
+
 
 /*
   logIn(auth: LogIn): Observable<any> {

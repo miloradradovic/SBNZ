@@ -61,4 +61,8 @@ export class LandingPageComponent implements OnInit {
     return JSON.parse(localStorage.getItem('user'))?.role === "ROLE_USER";
   }
 
+  isAdmin(){
+    return JSON.parse(localStorage.getItem('user'))?.role === "ROLE_ADMINISTRATOR";
+  }
+
 }

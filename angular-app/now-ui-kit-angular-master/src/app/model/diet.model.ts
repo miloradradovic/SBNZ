@@ -9,6 +9,7 @@ export interface DataInputModel {
 }
 
 export interface MealModel{
+    id: number,
     kCal: number,
     carbonHydrates: number,
     proteins: number,
@@ -16,7 +17,8 @@ export interface MealModel{
     name: String,
     mealType: String,
     junkPercentage: number,
-    recipe: String
+    recipe: String,
+    healthIssueTypes?: String[],
 }
 
 export interface DietModel{

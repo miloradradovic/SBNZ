@@ -18,6 +18,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { DietComponent } from './diet-page/diet.component';
 import { SearchDietComponent } from './search-diet/search-diet/search-diet.component';
 import { MatCardModule } from '@angular/material/card';
+import { CepComponent } from './cep-page/cep/cep.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserModule } from '@angular/platform-browser';
+import { AddExerciseComponent } from './add-exercise-page/add-exercise.component';
+import { AddMealComponent } from './add-meal-page/add-meal.component';
 
 
 
@@ -26,6 +31,7 @@ import { MatCardModule } from '@angular/material/card';
     imports: [
         ComponentsModule,
         ReactiveFormsModule,
+        BrowserModule,
         CommonModule,
         FormsModule,
         NgbModule,
@@ -37,7 +43,9 @@ import { MatCardModule } from '@angular/material/card';
         MatSelectModule,
         MatInputModule,
         MatCheckboxModule,
-        MatCardModule
+        MatCardModule,
+        MatSnackBarModule,
+        MatInputModule
       ],
     declarations: [
         LandingPageComponent,
@@ -45,7 +53,10 @@ import { MatCardModule } from '@angular/material/card';
         RegisterComponent,
         TrainingComponent,
         DietComponent,
-        SearchDietComponent
+        SearchDietComponent,
+        CepComponent,
+        AddExerciseComponent,
+        AddMealComponent
     ],
     exports:[  ]
 })

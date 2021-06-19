@@ -66,4 +66,8 @@ export class NavbarComponent implements OnInit {
     isUser(){
         return JSON.parse(localStorage.getItem('user'))?.role === "ROLE_USER";
       }
+
+    isAdmin(){
+        return JSON.parse(localStorage.getItem('user'))?.role === "ROLE_ADMINISTRATOR";
+      }
 }

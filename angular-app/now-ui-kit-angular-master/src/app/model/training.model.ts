@@ -1,4 +1,5 @@
 export interface TrainingModel {
+    id: number,
     sessions: SessionModel[],
     restTime: number,
     numberOfSession: number,
@@ -6,6 +7,7 @@ export interface TrainingModel {
 }
 
 export interface SessionModel {
+    id: number,
     exerciseDTO: ExerciseModel,
     weight: number,
     repetitions: number,
@@ -13,11 +15,13 @@ export interface SessionModel {
 }
 
 export interface ExerciseModel {
+    id: number,
     name: String,
     description: String,
     difficulty: String,
     exerciseCategory: String,
-    muscleList: String[]
+    muscleList: String[],
+    equipment?: boolean
 }
 
 export interface InputDataTraining {
